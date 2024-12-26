@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="payment_methods">
+        <item>BCA Virtual Account</item>
+        <item>Mandiri Virtual Account</item>
+        <item>Gopay</item>
+        <item>OVO</item>
+        <item>Credit Card</item>
+        <item>Cash on Delivery</item>
+    </string-array>
+</resources>
