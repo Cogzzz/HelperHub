@@ -56,7 +56,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1000dp"
+                    android:layout_height="1100dp"
                     android:layout_marginTop="350dp"
                     android:background="@drawable/white_bg_top_corner"
                     app:layout_constraintTop_toTopOf="parent">
@@ -147,41 +147,39 @@
                                 android:layout_weight="0.333">
 
                                 <ImageView
-                                    android:id="@+id/locLogo"
+                                    android:id="@+id/locLogo1"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
-                                    android:layout_marginStart="10dp"
                                     android:layout_marginEnd="6dp"
-                                    app:layout_constraintBottom_toBottomOf="@+id/durationtxt"
-                                    app:layout_constraintEnd_toStartOf="@+id/durationtxt"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="@+id/durationtxt"
-                                    app:srcCompat="@drawable/countries" />
+                                    app:layout_constraintBottom_toBottomOf="@+id/durationtxt1"
+                                    app:layout_constraintEnd_toStartOf="@+id/durationtxt1"
+                                    app:layout_constraintTop_toTopOf="@+id/durationtxt1"
+                                    app:srcCompat="@drawable/ages" />
 
                                 <TextView
-                                    android:id="@+id/durationtxt"
+                                    android:id="@+id/durationtxt1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
+                                    android:layout_marginStart="16dp"
                                     android:layout_marginTop="16dp"
-                                    android:text="Country"
+                                    android:text="Age"
                                     android:textColor="@color/purple"
                                     android:textStyle="bold"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="@id/locLogo"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <TextView
-                                    android:id="@+id/durations"
+                                    android:id="@+id/durations1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="8dp"
-                                    android:text="Country"
+                                    android:layout_marginStart="16dp"
+                                    android:text="ages"
                                     android:textColor="@color/purple"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/locLogo" />
-
+                                    app:layout_constraintTop_toBottomOf="@+id/locLogo1"></TextView>
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <View
@@ -197,39 +195,41 @@
                                 android:layout_weight="0.333">
 
                                 <ImageView
-                                    android:id="@+id/locLogo1"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
+                                    android:id="@+id/locLogo"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="10dp"
                                     android:layout_marginEnd="6dp"
-                                    app:layout_constraintBottom_toBottomOf="@+id/durationtxt1"
-                                    app:layout_constraintEnd_toStartOf="@+id/durationtxt1"
-                                    app:layout_constraintTop_toTopOf="@+id/durationtxt1"
-                                    app:srcCompat="@drawable/ages" />
+                                    app:layout_constraintBottom_toBottomOf="@+id/durationtxt"
+                                    app:layout_constraintEnd_toStartOf="@+id/durationtxt"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/durationtxt"
+                                    app:srcCompat="@drawable/chcklist" />
 
                                 <TextView
-                                    android:id="@+id/durationtxt1"
+                                    android:id="@+id/durationtxt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
+                                    android:layout_marginStart="24dp"
                                     android:layout_marginTop="16dp"
-                                    android:text="Age"
+                                    android:text="Experience"
                                     android:textColor="@color/purple"
                                     android:textStyle="bold"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintStart_toStartOf="@id/locLogo"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <TextView
-                                    android:id="@+id/durations1"
+                                    android:id="@+id/durations"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="8dp"
-                                    android:text="ages"
+                                    android:layout_marginStart="24dp"
+                                    android:text="experience"
                                     android:textColor="@color/purple"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/locLogo1" />
-
+                                    app:layout_constraintTop_toBottomOf="@+id/locLogo" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <View
@@ -274,7 +274,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="8dp"
-                                    android:text="Distance"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Religion"
                                     android:textColor="@color/purple"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -454,9 +455,6 @@
 
                         </TextView>
 
-
-
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -528,7 +526,98 @@
                             </LinearLayout>
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:layout_marginBottom="32dp"
+                            android:orientation="horizontal">
 
+                            <LinearLayout
+                                android:id="@+id/messageBtn"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.2"
+                                android:orientation="vertical">
+
+                                <ImageView
+
+                                    android:layout_width="55dp"
+                                    android:layout_height="55dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/light_purple_oval_bg"
+                                    android:padding="12dp"
+                                    app:srcCompat="@drawable/message" />
+
+                                <TextView
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="Message"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/callBtn"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.2"
+                                android:orientation="vertical">
+
+                                <ImageView
+
+                                    android:layout_width="55dp"
+                                    android:layout_height="55dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/light_purple_oval_bg"
+                                    android:padding="12dp"
+                                    app:srcCompat="@drawable/call" />
+
+                                <TextView
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="Call"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/shareBtn"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.2"
+                                android:orientation="vertical">
+
+                                <ImageView
+
+                                    android:layout_width="55dp"
+                                    android:layout_height="55dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/light_purple_oval_bg"
+                                    android:padding="12dp"
+                                    app:srcCompat="@drawable/share" />
+
+                                <TextView
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="Share"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -579,8 +668,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
