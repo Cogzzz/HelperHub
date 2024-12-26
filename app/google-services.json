@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "735841018942",
+    "project_id": "helperhub-7da10",
+    "storage_bucket": "helperhub-7da10.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735841018942:android:a08b47c51be0fb70f5dd6f",
+        "android_client_info": {
+          "package_name": "projectpaba.kel16.helperhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAooVqEkjjMCycaSKb-wBoKiF-M0ui1enU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735841018942:android:e514f2999d21fef9f5dd6f",
+        "android_client_info": {
+          "package_name": "uasb.c14220127.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAooVqEkjjMCycaSKb-wBoKiF-M0ui1enU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
