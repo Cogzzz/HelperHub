@@ -5,20 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-//WORKER ADAPTER
 class WorkerAdapter(private val workerList: List<Worker>) : RecyclerView.Adapter<WorkerAdapter.WorkerViewHolder>() {
 
     class WorkerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        // Changed IDs to match the layout file
         val img: ImageView = itemView.findViewById(R.id.img)
         val degreeTxt: TextView = itemView.findViewById(R.id.degreeTxt)
-        val nameTxt: TextView = itemView.findViewById(R.id.nameTxt)
-        val specialTxt: TextView = itemView.findViewById(R.id.specialTxt)
-        val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBar)
-        val scoreTxt: TextView = itemView.findViewById(R.id.scoreTxt)
+        val namesTxt: TextView = itemView.findViewById(R.id.namesTxt)  // Changed from nameTxt
+        val specialsTxt: TextView = itemView.findViewById(R.id.specialsTxt)  // Changed from specialTxt
         val makeBtn: Button = itemView.findViewById(R.id.makeBtn)
     }
 
@@ -29,11 +27,18 @@ class WorkerAdapter(private val workerList: List<Worker>) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: WorkerViewHolder, position: Int) {
         val worker = workerList[position]
-        holder.nameTxt.text = worker.name
-        holder.degreeTxt.text = worker.degree
-        holder.specialTxt.text = worker.specialization
-        holder.ratingBar.rating = worker.rating
-        holder.scoreTxt.text = worker.rating.toString()
+
+        // Load image using Glide
+        worker.imageUrl?.let { imageUrl ->
+            Glide.with(holder.img.context)
+                .load(imageUrl)
+                .into(holder.img)
+        }
+
+        // Set text fields with null safety
+        holder.namesTxt.text = worker.name ?: ""
+        holder.degreeTxt.text = worker.degree ?: ""
+        holder.specialsTxt.text = worker.specialization ?: ""
     }
 
     override fun getItemCount(): Int {

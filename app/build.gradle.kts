@@ -51,4 +51,5 @@ dependencies {
     implementation("com.google.firebase:firebase-database")             // Firebase Realtime Database
     implementation("com.google.firebase:firebase-storage")              // Firebase Storage
     implementation("com.google.zxing:core:3.5.2")                       // QR Code library (optional)
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
 }
