@@ -55,8 +55,9 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
                     android:orientation="vertical">
 
                     <TextView
@@ -70,34 +71,26 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Alamat: Jakarta, Indonesia"
+                        android:text="alamat pembantu"
                         android:textColor="@color/gray"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No. HP: 0123456789"
+                        android:text="nomor HP pembantu"
                         android:textColor="@color/gray"
                         android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Jenis Bekerja: Full Time"
-                        android:textColor="@color/gray"
-                        android:textSize="14sp" />
-
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
 
-        <!-- Task Info Section -->
+            <!-- Task Info Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Task Info"
+            android:text="Location"
             android:textColor="@color/purple"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -112,33 +105,55 @@
             android:paddingEnd="20dp"
             android:background="@drawable/grey_bg_corner"
             android:layout_marginBottom="16dp">
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/baseline_location_on_24"
+                    android:layout_marginEnd="8dp" />
+                <TextView
+                    android:id="@+id/alamatUtama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="alamat Utama Pemesan"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
             <TextView
+                android:id="@+id/detailAlamatPemesan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="8 Jalan Gunung Bromo 5"
+                android:text="alamat Pemesan"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Jl. Gn. Bromo 5 R No.8, RT.5/RW.2, Lengkong Wetan, Kec. Serpong, Kota Tangerang Selatan, Banten 15310, Indonesia"
-                android:textColor="@color/gray"
+               android:layout_marginTop="10dp"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="(+62) 087778106880 | Steven Suryajaya"
+                android:text="adreess Description"
                 android:textColor="@color/gray"
+                android:textStyle="italic"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
 
             <TextView
+                android:id="@+id/namaPemesan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Friday, 12/27/2024 - 02:00 PM"
+                android:text="Nama Pemesan"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/nomorHpPemesan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nomor Hp pemesan"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
@@ -148,47 +163,96 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Task Details"
+            android:text="Task Info"
             android:textColor="@color/purple"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
+
+        <!-- Payment Methods Section -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/grey_bg_corner"
             android:orientation="vertical"
             android:padding="15dp"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:background="@drawable/grey_bg_corner"
-            android:layout_marginBottom="16dp">
+            android:paddingEnd="20dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Workload: Max 100 m²"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Duration: 3 hours, from 02:00 PM to 05:00 PM"
+                android:text="Working Time"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginTop="4dp" />
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tanggalMulaiKerja"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="Friday, 12/27/2024 - 02:00 PM"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Duration "
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/lamaKerja"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="lama Kerja"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Number of Taskers: 3"
+                android:layout_marginTop="20dp"
+                android:text="Task Details"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginTop="4dp" />
+                android:textStyle="bold" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" />
+
         </LinearLayout>
 
-        <!-- Payment Methods Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -199,13 +263,14 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
 
+        <!-- Total Section -->
         <Spinner
             android:id="@+id/payment_method_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp">
+        </Spinner>
 
-        <!-- Total Section -->
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -213,7 +278,6 @@
             android:layout_marginBottom="16dp" />
 
         <LinearLayout
-            android:background=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -238,6 +302,7 @@
 
         <!-- Pay Button -->
         <Button
+            android:id="@+id/proceedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/purple"
