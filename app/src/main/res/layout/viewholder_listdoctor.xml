@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/purple_button_stroke"
-            android:text="Make Appointment"
+            android:text="View Detail"
             android:textColor="@color/darkPurple"
             android:textSize="16sp"
             android:textStyle="bold"

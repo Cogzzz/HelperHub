@@ -1,5 +1,6 @@
 package uasb.c14220127.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -21,25 +22,23 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.homepage)
 
-        // Initialize views
         setupViews()
-        // Fetch data
         fetchWorkersFromFirebase()
         fetchUserNameFromFirebase()
     }
 
     private fun setupViews() {
-        try {
-            welcomeTextView = findViewById(R.id.textView2)
-            workerRecyclerView = findViewById(R.id.viewCategory)  // Pastikan ID ini sama dengan di layout
-            workerRecyclerView.layoutManager = LinearLayoutManager(this)
-            workerAdapter = WorkerAdapter(workerList)
-            workerRecyclerView.adapter = workerAdapter
-        } catch (e: Exception) {
-            Log.e("HomePageActivity", "Error setting up views: ${e.message}")
-            Toast.makeText(this, "Error setting up app", Toast.LENGTH_LONG).show()
+        welcomeTextView = findViewById(R.id.textView2)
+        workerRecyclerView = findViewById(R.id.viewCategory)
+        workerRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        // Worker Adapter dengan listener
+        workerAdapter = WorkerAdapter(workerList, this) { workerId ->
+            openDetailActivity(workerId)
         }
+        workerRecyclerView.adapter = workerAdapter
     }
+
 
     private fun fetchWorkersFromFirebase() {
         val db = FirebaseFirestore.getInstance()
@@ -47,27 +46,21 @@ class HomePageActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { result ->
                 workerList.clear()
-                Log.d("FirebaseData", "Number of documents: ${result.size()}")
 
                 for (document in result) {
-                    try {
-                        val worker = document.toObject(Worker::class.java)
-                        Log.d("FirebaseData", "Worker data: Name=${worker.name}, Degree=${worker.degree}, Spec=${worker.specialization}, Image=${worker.imageUrl}")
-                        workerList.add(worker)
-                    } catch (e: Exception) {
-                        Log.e("FirebaseData", "Error parsing worker document: ${document.id}", e)
-                    }
+                    val worker = document.toObject(Worker::class.java)
+                    worker.workerId = document.id // Assign the document ID to workerId
+                    workerList.add(worker)
                 }
-                workerAdapter.notifyDataSetChanged()
-                Log.d("FirebaseData", "Final workerList size: ${workerList.size}")
 
+                workerAdapter.notifyDataSetChanged()
                 if (workerList.isEmpty()) {
-                    Toast.makeText(this, "No workers found in database", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "No workers found", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
-                Log.e("FirebaseData", "Error getting documents", exception)
-                Toast.makeText(this, "Failed to load workers: ${exception.localizedMessage}", Toast.LENGTH_LONG).show()
+                Log.e("FirebaseData", "Error fetching workers: ${exception.message}")
+                Toast.makeText(this, "Failed to load workers", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -82,16 +75,18 @@ class HomePageActivity : AppCompatActivity() {
         db.collection("users").document(user.uid)
             .get()
             .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val userName = document.getString("name")
-                    welcomeTextView.text = "Hi, ${userName ?: "User"}"
-                } else {
-                    welcomeTextView.text = "Welcome!"
-                }
+                val userName = document.getString("name")
+                welcomeTextView.text = "Hi, ${userName ?: "User"}"
             }
-            .addOnFailureListener { exception ->
-                Log.e("HomepageActivity", "Error getting user name: ", exception)
+            .addOnFailureListener {
                 welcomeTextView.text = "Welcome!"
             }
+    }
+
+    private fun openDetailActivity(workerId: String) {
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra("worker_id", workerId)
+        }
+        startActivity(intent)
     }
 }

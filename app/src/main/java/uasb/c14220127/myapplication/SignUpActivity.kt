@@ -77,7 +77,7 @@ class SignUpActivity : AppCompatActivity() {
                                     startActivity(
                                         Intent(
                                             this@SignUpActivity,
-                                            MainActivity::class.java
+                                            MainActivityLogin::class.java
                                         )
                                     )
                                     finish()
@@ -110,7 +110,7 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         backButton.setOnClickListener {
-            startActivity(Intent(this@SignUpActivity, MainActivity::class.java))
+            startActivity(Intent(this@SignUpActivity, MainActivityLogin::class.java))
             finish()
         }
     }

@@ -1,5 +1,7 @@
 package uasb.c14220127.myapplication
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,19 +11,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class WorkerAdapter(private val workerList: List<Worker>) : RecyclerView.Adapter<WorkerAdapter.WorkerViewHolder>() {
+class WorkerAdapter(private val workerList: List<Worker>, private val context: Context,private val onItemClick: (String) -> Unit) : RecyclerView.Adapter<WorkerAdapter.WorkerViewHolder>() {
 
     class WorkerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Changed IDs to match the layout file
         val img: ImageView = itemView.findViewById(R.id.img)
         val degreeTxt: TextView = itemView.findViewById(R.id.degreeTxt)
-        val namesTxt: TextView = itemView.findViewById(R.id.namesTxt)  // Changed from nameTxt
-        val specialsTxt: TextView = itemView.findViewById(R.id.specialsTxt)  // Changed from specialTxt
+        val namesTxt: TextView = itemView.findViewById(R.id.namesTxt)
+        val specialsTxt: TextView = itemView.findViewById(R.id.specialsTxt)
         val makeBtn: Button = itemView.findViewById(R.id.makeBtn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.viewholder_listdoctor, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.viewholder_listdoctor, parent, false)
         return WorkerViewHolder(view)
     }
 
@@ -39,7 +40,29 @@ class WorkerAdapter(private val workerList: List<Worker>) : RecyclerView.Adapter
         holder.namesTxt.text = worker.name ?: ""
         holder.degreeTxt.text = worker.degree ?: ""
         holder.specialsTxt.text = worker.specialization ?: ""
+
+        // Null safety for workerId
+        val workerId = worker.workerId ?: ""
+
+        // Set click listener on the entire item
+        holder.itemView.setOnClickListener {
+            if (workerId.isNotEmpty()) {
+                val intent = Intent(context, DetailActivity::class.java)
+                intent.putExtra("worker_id", workerId)  // Send worker ID to DetailActivity
+                context.startActivity(intent)
+            }
+        }
+
+        // Optional: Button triggers the same action
+        holder.makeBtn.setOnClickListener {
+            if (workerId.isNotEmpty()) {
+                val intent = Intent(context, DetailActivity::class.java)
+                intent.putExtra("worker_id", workerId)  // Send worker ID to DetailActivity
+                context.startActivity(intent)
+            }
+        }
     }
+
 
     override fun getItemCount(): Int {
         return workerList.size
