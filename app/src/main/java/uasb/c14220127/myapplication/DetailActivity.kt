@@ -42,7 +42,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         binding.btnBooking.setOnClickListener {
-            val intent = Intent(this, BookingActivity::class.java).apply {
+            val intent = Intent(this, InputJobdesc::class.java).apply {
                 putExtra("worker_id", workerId)
             }
             startActivity(intent)

@@ -22,5 +22,6 @@ data class Worker(
     val expectedSalary: String? = null,
     val accommodation: String? = null,
     val dayOff: String? = null,
+    val phoneNum: String? = null,
     val isFavorite: Boolean = false
 )
