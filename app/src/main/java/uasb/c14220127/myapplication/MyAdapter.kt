@@ -15,7 +15,7 @@ class MyAdapter(private val jobs: List<String>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_layout, parent, false)
+            .inflate(R.layout.layout_jobdesc, parent, false)
         return JobViewHolder(view)
     }
 
