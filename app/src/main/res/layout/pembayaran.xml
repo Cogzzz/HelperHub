@@ -1,41 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/paymentpinner"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Payment for Domestic Helper"
+            android:textColor="@color/purple"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Helper Details"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:padding="15dp"
+            android:background="@drawable/custom_edittext"
+            android:orientation="vertical">
 
-            <!-- Header -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:text="Payment for Domestic Helper"
-                android:textColor="@color/purple"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <!-- Helper Information -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/workerImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginEnd="16dp"
@@ -44,11 +57,13 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/workerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Sarah J."
@@ -57,55 +72,149 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/workerAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Alamat: Jakarta, Indonesia"
-                        android:textColor="@color/gray"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="No. HP: 0123456789"
+                        android:text="alamat pembantu"
                         android:textColor="@color/gray"
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/workerContact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Jenis Bekerja: Full Time"
+                        android:text="nomor HP pembantu"
                         android:textColor="@color/gray"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
 
-            <!-- Payment Details -->
+
+        <!-- Task Info Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:background="@drawable/grey_bg_corner"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/baseline_location_on_24"
+                    android:layout_marginEnd="8dp" />
+                <TextView
+                    android:id="@+id/alamatUtama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="alamat Utama Pemesan"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/detailAlamatPemesan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="alamat Pemesan"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:textSize="14sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Payment Details"
-                android:textColor="@color/purple"
-                android:textSize="20sp"
+                android:text="address Description"
+                android:textColor="@color/gray"
+                android:textStyle="italic"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/namaPemesan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nama Pemesan"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/nomorHpPemesan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nomor Hp pemesan"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Task Details Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Info"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+
+        <!-- Payment Methods Section -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/grey_bg_corner"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Working Time"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Monthly Salary"
+                    android:text="Date"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tanggalMulaiKerja"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SG$ 950"
+                    android:gravity="end"
+                    android:text="Friday, 12/27/2024 - 02:00 PM"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -113,93 +222,101 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Deductions"
+                    android:text="Duration "
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/lamaKerja"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SG$ 0"
+                    android:gravity="end"
+                    android:text="lama Kerja"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/lightGrey" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Total"
-                    android:textColor="@color/purple"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SG$ 950"
-                    android:textColor="@color/purple"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Payment Methods -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:text="Payment Method"
-                android:textColor="@color/purple"
-                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                android:text="Task Details"
+                android:textColor="@color/black"
+                android:layout_marginBottom="10dp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="vertical" />
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bank Transfer" />
+        </LinearLayout>
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="E-wallet" />
-            </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Payment Method"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
 
-            <!-- Pay Button -->
-            <Button
-                android:layout_width="match_parent"
+        <!-- Total Section -->
+        <Spinner
+            android:id="@+id/payment_method_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp">
+        </Spinner>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/purple"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/purple"
-                android:text="Pay Now"
-                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:text="Total"
+                android:textColor="@color/purple"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/hargaService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="738,000 IDR"
+                android:textColor="@color/purple"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
-    </ScrollView>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Pay Button -->
+        <Button
+            android:id="@+id/proceedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple"
+            android:text="Book"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</ScrollView>

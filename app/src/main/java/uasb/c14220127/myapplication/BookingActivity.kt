@@ -44,7 +44,7 @@ class BookingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.coba3)
+        setContentView(R.layout.pembayaran)
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance()

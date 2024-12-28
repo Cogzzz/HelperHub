@@ -22,7 +22,7 @@ class WorkerAdapter(private val workerList: List<Worker>, private val context: C
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkerViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.viewholder_listdoctor, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.viewholder_listworker, parent, false)
         return WorkerViewHolder(view)
     }
 
