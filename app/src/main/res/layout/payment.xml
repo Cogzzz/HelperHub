@@ -11,7 +11,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,8 +85,6 @@
             </LinearLayout>
         </LinearLayout>
 
-
-            <!-- Task Info Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -161,7 +158,6 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
-        <!-- Task Details Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -171,8 +167,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
-
-        <!-- Payment Methods Section -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -266,7 +260,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
 
-        <!-- Total Section -->
         <Spinner
             android:id="@+id/payment_method_spinner"
             android:layout_width="match_parent"
@@ -307,7 +300,6 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Pay Button -->
         <Button
             android:id="@+id/proceedButton"
             android:layout_width="match_parent"

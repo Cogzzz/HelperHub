@@ -1,10 +1,8 @@
 package uasb.c14220127.myapplication
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -20,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.coba3)
+        setContentView(R.layout.payment)
 
         // Menyesuaikan padding untuk spinner
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.paymentpinner)) { v, insets ->
