@@ -24,4 +24,8 @@ class JobAdapter(private val jobs: List<String>) :
     }
 
     override fun getItemCount(): Int = jobs.size
+
+    fun getJobs(): List<String> {
+        return jobs.toList()
+    }
 }

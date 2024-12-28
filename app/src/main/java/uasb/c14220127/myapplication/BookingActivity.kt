@@ -1,13 +1,16 @@
 package uasb.c14220127.myapplication
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,6 +26,8 @@ class BookingActivity : AppCompatActivity() {
     private var spinner: Spinner? = null
     private var workerId: String = ""
     private lateinit var db: FirebaseFirestore
+    private lateinit var confirmButton: Button // Add this at class level
+    private lateinit var loadingDialog: AlertDialog
 
     // Worker details views
     private lateinit var workerNameTv: TextView
@@ -65,6 +70,11 @@ class BookingActivity : AppCompatActivity() {
         val selectedJobs = intent.getStringArrayListExtra("selectedJobs")
         price = intent.getIntExtra("price", 0)  // Ambil harga dari Intent
 
+        confirmButton = findViewById(R.id.proceedButton) // Initialize the button
+        confirmButton.setOnClickListener {
+            saveBookingToFirebase()
+        }
+
         // Fetch and display data
         if (workerId != null) {
             fetchWorkerData()
@@ -76,6 +86,10 @@ class BookingActivity : AppCompatActivity() {
 
         // Setup payment spinner
         setupPaymentSpinner()
+
+
+        // Initialize loading dialog
+        createLoadingDialog()
     }
 
     private fun initializeViews() {
@@ -168,7 +182,7 @@ class BookingActivity : AppCompatActivity() {
         // Display date and duration
         dateTextView.text = date ?: "Not specified"
         durationTextView.text = duration ?: "Not specified"
-        priceTextView.text = "Price: Rp $price"  // Tampilkan harga
+        priceTextView.text = "$price"  // Tampilkan harga
 
         // Setup RecyclerView for jobs
         jobs?.let {
@@ -204,5 +218,116 @@ class BookingActivity : AppCompatActivity() {
                 // No action needed
             }
         }
+    }
+
+    private fun saveBookingToFirebase() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Get selected payment method
+        val selectedPaymentMethod = (spinner?.selectedItem as? SpinnerItem)?.text ?: "Unknown"
+
+        // Create a unique booking ID
+        val bookingId = db.collection("bookings").document().id
+
+        // Get the jobs list from the RecyclerView adapter
+        val jobsList = (jobRecyclerView.adapter as? JobAdapter)?.getJobs() ?: listOf()
+
+        val booking = BookingData(
+            bookingId = bookingId,
+            userId = currentUser.uid,
+            workerId = workerId,
+            date = dateTextView.text.toString(),
+            duration = durationTextView.text.toString(),
+            jobs = jobsList,
+            price = price,
+            paymentMethod = selectedPaymentMethod,
+            userName = userNameTv.text.toString(),
+            userAddress = userMainAddressTv.text.toString(),
+            userPhone = userPhoneTv.text.toString(),
+            workerName = workerNameTv.text.toString(),
+            workerAddress = workerAddressTv.text.toString(),
+            workerPhone = workerPhoneTv.text.toString()
+        )
+
+        // Show loading dialog before saving
+        showLoadingDialog()
+
+        // Simpan ke firebase
+        db.collection("bookings")
+            .document(bookingId)
+            .set(booking)
+            .addOnSuccessListener {
+                // Save references
+                saveBookingReferenceToUser(bookingId)
+                saveBookingReferenceToWorker(bookingId)
+
+                hideLoadingDialog()
+                Toast.makeText(this, "Booking berhasil disimpan!", Toast.LENGTH_SHORT).show()
+                navigateToBookingConfirmation(bookingId)
+            }
+            .addOnFailureListener { e ->
+                hideLoadingDialog()
+                Toast.makeText(this, "Error menyimpan booking: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun createLoadingDialog() {
+        val builder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.loading_dialog, null)
+        builder.setView(dialogView)
+        builder.setCancelable(false)
+        loadingDialog = builder.create()
+    }
+
+    private fun saveBookingReferenceToWorker(bookingId: String) {
+        val workerBookingRef = hashMapOf(
+            "bookingId" to bookingId,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        db.collection("workers")
+            .document(workerId)
+            .collection("bookings")
+            .document(bookingId)
+            .set(workerBookingRef)
+    }
+
+    private fun saveBookingReferenceToUser(bookingId: String) {
+        val currentUser = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        val userBookingRef = hashMapOf(
+            "bookingId" to bookingId,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        db.collection("users")
+            .document(currentUser)
+            .collection("bookings")
+            .document(bookingId)
+            .set(userBookingRef)
+    }
+
+    private fun hideLoadingDialog() {
+        if (loadingDialog.isShowing) {
+            loadingDialog.dismiss()
+        }
+    }
+
+    private fun showLoadingDialog() {
+        if (!loadingDialog.isShowing) {
+            loadingDialog.show()
+        }
+    }
+    private fun navigateToBookingConfirmation(bookingId: String) {
+        val intent = Intent(this, BookingConfirmationActivity::class.java).apply {
+            putExtra("booking_id", bookingId)
+        }
+        startActivity(intent)
+        finish()
     }
 }

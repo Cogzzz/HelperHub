@@ -11,7 +11,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +29,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
-        android:layout_marginBottom="8dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,8 +89,6 @@
             </LinearLayout>
         </LinearLayout>
 
-
-        <!-- Task Info Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -139,7 +136,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="address Description"
+                android:text="adreess Description"
                 android:textColor="@color/gray"
                 android:textStyle="italic"
                 android:textSize="14sp"
@@ -165,7 +162,6 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
-        <!-- Task Details Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -175,8 +171,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
-
-        <!-- Payment Methods Section -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -214,7 +208,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Friday, 12/27/2024 - 02:00 PM"
+                    android:text="Tanggal Mulai Kerja"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -270,10 +264,11 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
 
-        <!-- Total Section -->
         <Spinner
             android:id="@+id/payment_method_spinner"
             android:layout_width="match_parent"
+            android:padding="8dp"
+            android:background="@drawable/grey_bg_corner"
             android:layout_height="match_parent"
             android:layout_marginBottom="16dp">
         </Spinner>
@@ -287,6 +282,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/grey_bg_corner"
+            android:padding="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -308,7 +305,6 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Pay Button -->
         <Button
             android:id="@+id/proceedButton"
             android:layout_width="match_parent"

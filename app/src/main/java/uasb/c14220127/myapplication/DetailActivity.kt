@@ -101,20 +101,12 @@ class DetailActivity : AppCompatActivity() {
             }
 
             // Work Experience Section
-            val workExperienceText = """
-                ${worker.workPeriod}
-                ${worker.workPosition} - ${worker.workEmployer}
-                Duties: ${worker.workDuties}
-            """.trimIndent()
+            // Work Experience Section
+            tvWorkPeriod.text = worker.workPeriod ?: "No Period Provided"
+            tvWorkExp.text = "${worker.workPosition ?: "N/A"} - ${worker.workEmployer ?: "N/A"}"
+            tvDuties.text = "Duties: ${worker.workDuties ?: "N/A"}"
 
 
         }
     }
-//    private fun bookWorker() {
-//        // Implement booking functionality
-//        val intent = Intent(this, BookingActivity::class.java).apply {
-//            putExtra("worker_id", workerId)
-//        }
-//        startActivity(intent)
-//    }
 }

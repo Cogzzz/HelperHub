@@ -30,6 +30,7 @@
         <activity android:name=".DetailActivity"/>
         <activity android:name=".BookingActivity"/>
         <activity android:name=".InputJobdesc"/>
+        <activity android:name=".BookingConfirmationActivity"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

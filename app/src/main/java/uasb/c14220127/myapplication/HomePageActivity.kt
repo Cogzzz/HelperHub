@@ -28,7 +28,7 @@ class HomePageActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        welcomeTextView = findViewById(R.id.textView2)
+        welcomeTextView = findViewById(R.id.textview2)
         workerRecyclerView = findViewById(R.id.viewCategory)
         workerRecyclerView.layoutManager = LinearLayoutManager(this)
 
