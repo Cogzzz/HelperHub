@@ -3,6 +3,7 @@ package uasb.c14220127.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ class HomePageActivity : AppCompatActivity() {
         setContentView(R.layout.homepage)
 
         setupViews()
+        setupBottomNavigation()
         fetchWorkersFromFirebase()
         fetchUserNameFromFirebase()
     }
@@ -37,6 +39,17 @@ class HomePageActivity : AppCompatActivity() {
             openDetailActivity(workerId)
         }
         workerRecyclerView.adapter = workerAdapter
+    }
+
+    private fun setupBottomNavigation() {
+        val profileLayout = findViewById<LinearLayout>(R.id.profileLayout)
+        profileLayout.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+        val transactionLayout = findViewById<LinearLayout>(R.id.transactionLayout)
+        transactionLayout.setOnClickListener {
+            startActivity(Intent(this, InvoiceActivity::class.java))
+        }
     }
 
 

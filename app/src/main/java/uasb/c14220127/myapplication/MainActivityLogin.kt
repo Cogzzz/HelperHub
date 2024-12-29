@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivityLogin : AppCompatActivity() {
@@ -27,18 +29,10 @@ class MainActivityLogin : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-        FirebaseApp.initializeApp(this) // Initialize Firebase
+        FirebaseApp.initializeApp(this)
         setContentView(R.layout.login)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         // Initialize Firebase Auth and Firestore
         auth = FirebaseAuth.getInstance()
@@ -51,9 +45,10 @@ class MainActivityLogin : AppCompatActivity() {
         registerText = findViewById(R.id.signupText)
 
         // Login button listener
-        loginButton.setOnClickListener { v: View? ->
-            val username = usernameField.text.toString().trim { it <= ' ' }
-            val password = passwordField.text.toString().trim { it <= ' ' }
+        loginButton.setOnClickListener {
+            val username = usernameField.text.toString().trim()
+            val password = passwordField.text.toString().trim()
+
 
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(
@@ -64,59 +59,53 @@ class MainActivityLogin : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Fetch email from Firestore using username
+            // Query Firestore for the user with matching username
             firestore.collection("users")
                 .whereEqualTo("username", username)
                 .get()
                 .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        val email = documents.documents[0].getString("email") ?: ""
-                        auth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener { task: Task<AuthResult?> ->
-                                if (task.isSuccessful) {
-                                    val user = auth.currentUser
-                                    if (user != null) {
-                                        Log.d("MainActivity", "Login successful! User: ${user.email}")
-                                        val intent = Intent(this@MainActivityLogin, HomePageActivity::class.java)
-                                        startActivity(intent)
-                                        finish()
-                                    }
-                                } else {
-                                    Log.e("MainActivity", "Login failed: ${task.exception?.message}")
-                                    Toast.makeText(
-                                        this@MainActivityLogin,
-                                        "Login failed: ${task.exception?.message}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.e("MainActivity", "Login Exception: ${exception.message}")
-                                Toast.makeText(
-                                    this@MainActivityLogin,
-                                    "Login Exception: ${exception.message}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                    } else {
+                    if (documents.isEmpty) {
                         Toast.makeText(
                             this@MainActivityLogin,
                             "Username not found",
                             Toast.LENGTH_SHORT
                         ).show()
+                        return@addOnSuccessListener
                     }
+
+                    // Get user document
+                    val userDoc = documents.documents[0]
+                    val email = userDoc.getString("email") ?: ""
+                    if (email.isEmpty()) {
+                        Toast.makeText(this, "Email not found for this username", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
+
+                    // Attempt sign in with email and password
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnSuccessListener {
+                            val intent = Intent(this@MainActivityLogin, HomePageActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                this@MainActivityLogin,
+                                "Invalid password",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e("Login", "Error: ${e.message}")
+                        }
                 }
-                .addOnFailureListener { exception ->
-                    Log.e("MainActivity", "Error fetching user: ${exception.message}")
+                .addOnFailureListener { e ->
                     Toast.makeText(
                         this@MainActivityLogin,
-                        "Error fetching user: ${exception.message}",
+                        "Error during login: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
         }
 
-        // Register text listener
         registerText.setOnClickListener {
             val intent = Intent(this@MainActivityLogin, SignUpActivity::class.java)
             startActivity(intent)

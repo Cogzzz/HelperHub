@@ -220,6 +220,7 @@ class BookingActivity : AppCompatActivity() {
         }
     }
 
+    // Update the saveBookingToFirebase() function:
     private fun saveBookingToFirebase() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
@@ -253,25 +254,45 @@ class BookingActivity : AppCompatActivity() {
             workerPhone = workerPhoneTv.text.toString()
         )
 
-        // Show loading dialog before saving
         showLoadingDialog()
 
-        // Simpan ke firebase
+        // Save booking and create invoice
         db.collection("bookings")
             .document(bookingId)
             .set(booking)
             .addOnSuccessListener {
-                // Save references
-                saveBookingReferenceToUser(bookingId)
-                saveBookingReferenceToWorker(bookingId)
+                // Create and save invoice
+                val invoice = InvoiceData(
+                    bookingId = bookingId,
+                    userId = currentUser.uid,
+                    workerId = workerId,
+                    workerName = workerNameTv.text.toString(),
+                    date = dateTextView.text.toString(),
+                    amount = price,
+                    paymentMethod = selectedPaymentMethod,
+                    timestamp = System.currentTimeMillis()
+                )
 
-                hideLoadingDialog()
-                Toast.makeText(this, "Booking berhasil disimpan!", Toast.LENGTH_SHORT).show()
-                navigateToBookingConfirmation(bookingId)
+                db.collection("invoices")
+                    .document(bookingId)
+                    .set(invoice)
+                    .addOnSuccessListener {
+                        hideLoadingDialog()
+                        Toast.makeText(this, "Booking successful!", Toast.LENGTH_SHORT).show()
+                        // Navigate directly to HomePage
+                        val intent = Intent(this, HomePageActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }
+                    .addOnFailureListener { e ->
+                        hideLoadingDialog()
+                        Toast.makeText(this, "Error creating invoice: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
             }
             .addOnFailureListener { e ->
                 hideLoadingDialog()
-                Toast.makeText(this, "Error menyimpan booking: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error saving booking: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -324,7 +345,7 @@ class BookingActivity : AppCompatActivity() {
         }
     }
     private fun navigateToBookingConfirmation(bookingId: String) {
-        val intent = Intent(this, BookingConfirmationActivity::class.java).apply {
+        val intent = Intent(this, HomePageActivity::class.java).apply {
             putExtra("booking_id", bookingId)
         }
         startActivity(intent)

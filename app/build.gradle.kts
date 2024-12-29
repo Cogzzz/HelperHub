@@ -47,6 +47,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.firebase:firebase-firestore-ktx:24.4.0")
     implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.androidx.swiperefreshlayout)
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -54,8 +55,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
-    implementation("com.google.zxing:core:3.5.2")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
+    implementation ("com.google.zxing:core:3.4.1")  // For QR code generation
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }
