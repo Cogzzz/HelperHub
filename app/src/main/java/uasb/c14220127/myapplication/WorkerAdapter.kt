@@ -19,6 +19,7 @@ class WorkerAdapter(private val workerList: List<Worker>, private val context: C
         val namesTxt: TextView = itemView.findViewById(R.id.namesTxt)
         val specialsTxt: TextView = itemView.findViewById(R.id.specialsTxt)
         val makeBtn: Button = itemView.findViewById(R.id.makeBtn)
+        val editBtn: Button = itemView.findViewById(R.id.editBtn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkerViewHolder {
@@ -57,6 +58,13 @@ class WorkerAdapter(private val workerList: List<Worker>, private val context: C
         holder.makeBtn.setOnClickListener {
             if (workerId.isNotEmpty()) {
                 val intent = Intent(context, DetailActivity::class.java)
+                intent.putExtra("worker_id", workerId)  // Send worker ID to DetailActivity
+                context.startActivity(intent)
+            }
+        }
+        holder.editBtn.setOnClickListener {
+            if (workerId.isNotEmpty()) {
+                val intent = Intent(context, EditActivity::class.java)
                 intent.putExtra("worker_id", workerId)  // Send worker ID to DetailActivity
                 context.startActivity(intent)
             }

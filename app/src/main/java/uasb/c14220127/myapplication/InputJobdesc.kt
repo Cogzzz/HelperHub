@@ -138,3 +138,5 @@ class InputJobdesc : AppCompatActivity() {
         }
     }
 }
+
+//misalkan dalam 1 hari, job task masing2 berapa.......

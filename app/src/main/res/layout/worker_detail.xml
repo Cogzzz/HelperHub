@@ -30,7 +30,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="400dp"
                         android:scaleType="centerInside"
-                        android:src="@drawable/women"
+                        android:src="@drawable/workers"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

@@ -74,7 +74,7 @@ class DetailActivity : AppCompatActivity() {
             // Profile Image
             Glide.with(this@DetailActivity)
                 .load(worker.imageUrl)
-                .placeholder(R.drawable.women)
+                .placeholder(R.drawable.workers)
                 .into(imageView4)
 
             // Basic Information

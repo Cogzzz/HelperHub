@@ -146,7 +146,7 @@ class BookingActivity : AppCompatActivity() {
                         Log.d("BookingActivity", "Loading image from: $imageUrl")
                         Glide.with(this)
                             .load(imageUrl)
-                            .placeholder(R.drawable.women)
+                            .placeholder(R.drawable.workers)
                             .into(findViewById(R.id.workerImage))
                     }
                 } else {
@@ -352,3 +352,5 @@ class BookingActivity : AppCompatActivity() {
         finish()
     }
 }
+
+//limit order

@@ -52,7 +52,7 @@
                     android:layout_height="80dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/light_purple_oval_bg"
-                    android:src="@drawable/women" />
+                    android:src="@drawable/workers" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -65,7 +65,7 @@
                         android:id="@+id/workerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Sarah J."
+                        android:text="Ana Sutrisno"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />

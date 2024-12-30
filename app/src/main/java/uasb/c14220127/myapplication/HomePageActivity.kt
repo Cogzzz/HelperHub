@@ -3,6 +3,7 @@ package uasb.c14220127.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -37,6 +38,7 @@ class HomePageActivity : AppCompatActivity() {
         // Worker Adapter dengan listener
         workerAdapter = WorkerAdapter(workerList, this) { workerId ->
             openDetailActivity(workerId)
+            openEditActivity(workerId)
         }
         workerRecyclerView.adapter = workerAdapter
     }
@@ -98,6 +100,12 @@ class HomePageActivity : AppCompatActivity() {
 
     private fun openDetailActivity(workerId: String) {
         val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra("worker_id", workerId)
+        }
+        startActivity(intent)
+    }
+    private fun openEditActivity(workerId: String) {
+        val intent = Intent(this, EditActivity::class.java).apply {
             putExtra("worker_id", workerId)
         }
         startActivity(intent)
