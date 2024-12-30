@@ -2,12 +2,15 @@ package uasb.c14220127.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.google.android.play.core.integrity.e
 //import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,6 +25,7 @@ class EditActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private var workerId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,8 @@ class EditActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+
+        workerId = intent.getStringExtra("worker_id") ?: ""
 
         initializeViews()
 //        fetchAndDisplayUserData()
@@ -53,37 +59,34 @@ class EditActivity : AppCompatActivity() {
     }
 
 
+    private fun fetchWorkerData() {
+        Log.d("EditActivity", "Fetching worker data for ID: $workerId")
 
-//    private fun fetchAndDisplayUserData() {
-//        val currentUser = auth.currentUser
-//        if (currentUser == null) {
-//            navigateToViewHolder()
-//            return
-//        }
-//
-//        db.collection("workers")
-//            .document(currentUser.uid)
-//            .get()
-//            .addOnSuccessListener { document ->
-//                if (document != null && document.exists()) {
-//                    // Display user data
-//                    workerNameTxt.text = document.getString("name") ?: ""
-//                    specTxt.text = document.getString("specialization") ?: ""
-//
-//                    //set edit
-//                    workerNameEdit.setText(workerNameTxt.text)
-//                    specEdit.setText(specTxt.text)
-//                }
-//            }
-//            .addOnFailureListener { e ->
-//                Toast.makeText(this, "Error loading profile: ${e.message}", Toast.LENGTH_SHORT).show()
-//            }
-//    }
+        db.collection("workers").document(workerId)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.d("BookingActivity", "Worker document exists: ${document.exists()}")
+                if (document != null && document.exists()) {
+                    // Display user data
+                    workerNameTxt.text = document.getString("name") ?: ""
+                    specTxt.text = document.getString("specialization") ?: ""
+
+                    //set edit
+                    workerNameEdit.setText(workerNameTxt.text)
+                    specEdit.setText(specTxt.text)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("EditActivity", "Error fetching worker data", e)
+                Toast.makeText(this, "Error fetching worker data: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
 
 
-    private fun updateUserData() {
-        val currentWorker = auth.currentUser ?: return
+    private fun updateWorkerData() {
+        //val currentWorker = worker.workerId
 
         // Data yang akan diperbarui
         val updatedData = hashMapOf(
@@ -93,7 +96,7 @@ class EditActivity : AppCompatActivity() {
 
         // Perbarui data di Firestore
         db.collection("workers")
-            .document(currentWorker.uid)
+            .document(workerId)
             .update(updatedData as Map<String, Any>)
             .addOnSuccessListener {
                 setEditMode(false)
@@ -125,14 +128,18 @@ class EditActivity : AppCompatActivity() {
         }
 
         saveButton.setOnClickListener {
-            updateUserData()
+            updateWorkerData(worker = )
         }
     }
 
     private fun navigateToViewHolder() {
-        val intent = Intent(this, MainActivityLogin::class.java)
+        val intent = Intent(this, HomePageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
 }
+
+
+        //edit worker, pemilihan schedule (kalau udah order, gabole double dalam 1 hari), jamnya dihapus, perhitungan berdasarkan
+        //job task satu satu

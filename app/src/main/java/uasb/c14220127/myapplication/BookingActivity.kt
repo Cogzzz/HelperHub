@@ -352,5 +352,3 @@ class BookingActivity : AppCompatActivity() {
         finish()
     }
 }
-
-//limit order
