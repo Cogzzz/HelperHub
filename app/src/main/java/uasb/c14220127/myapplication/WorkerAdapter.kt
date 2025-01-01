@@ -64,7 +64,7 @@ class WorkerAdapter(private val workerList: List<Worker>, private val context: C
         }
         holder.editBtn.setOnClickListener {
             if (workerId.isNotEmpty()) {
-                val intent = Intent(context, EditActivity::class.java)
+                val intent = Intent(context, EditWorker::class.java)
                 intent.putExtra("worker_id", workerId)  // Send worker ID to DetailActivity
                 context.startActivity(intent)
             }

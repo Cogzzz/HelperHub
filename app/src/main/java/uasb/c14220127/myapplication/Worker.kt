@@ -6,7 +6,7 @@ data class Worker(
     val degree: String? = null,
     val specialization: String? = null,
     val rating: Float? = null,
-    val age: Int? = null,
+    val age: String? = null,
     val totalRating: Int? = null,
     val imageUrl: String? = null,
     val address: String? = null,

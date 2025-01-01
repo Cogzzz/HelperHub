@@ -1,37 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/flowLayout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        app:flexWrap="wrap"
-        app:justifyContent="flex_start">
-    </com.google.android.flexbox.FlexboxLayout>
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <Button
-        android:id="@+id/datePickerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pilih Tanggal"
-        android:layout_marginTop="16dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Services"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-    <Spinner
-        android:id="@+id/durationSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="12dp">
 
-    <Button
-        android:id="@+id/proceedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Lanjutkan"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flowLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:flexWrap="wrap"
+                app:alignItems="flex_start"
+                app:justifyContent="space_between"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Schedule"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="12dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/datePickerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Select Date and Time"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/purple"
+                app:iconGravity="start"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/proceedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Proceed to Booking"
+            android:backgroundTint="@color/purple"
+            android:textSize="16sp"
+            android:padding="12dp"
+            style="@style/Widget.MaterialComponents.Button"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -9,64 +10,43 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Header Section -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textview2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:text="Hello, User"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/textview2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Hello, User"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold">
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/textview3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="How Are You Today ?"
-                        android:textColor="@color/black">
-                    </TextView>
-                </LinearLayout>
-
-<!--                <ImageView-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_marginStart="16dp"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:layout_marginEnd="16dp"-->
-<!--                    android:src="@drawable/notification">-->
-<!--                </ImageView>-->
-
+                <TextView
+                    android:id="@+id/textview3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="How Are You Today ?"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
+            <!-- Banner Section -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="6dp">
 
                 <RelativeLayout
@@ -101,7 +81,6 @@
                                 android:textColor="@color/white"
                                 android:textStyle="bold"
                                 android:textSize="20sp" />
-
                         </LinearLayout>
 
                         <ImageView
@@ -113,7 +92,6 @@
                             android:scaleType="centerInside"
                             android:src="@drawable/workers" />
                     </LinearLayout>
-
                 </RelativeLayout>
 
                 <EditText
@@ -138,10 +116,10 @@
                     app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+            <!-- Speciality Section -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
@@ -157,105 +135,21 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView3"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginEnd="16dp"-->
-<!--                    android:text="See All"-->
-<!--                    android:textColor="@color/purple" />-->
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- RecyclerView Section -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/viewCategory"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="100dp">
-
-                <ProgressBar
-                    android:id="@+id/progressBarCategory"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/viewCategory"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/viewCategory"
-                    app:layout_constraintTop_toTopOf="@+id/viewCategory"
-                    app:layout_constraintVertical_bias="0.506" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/viewCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:paddingEnd="16dp"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                </androidx.recyclerview.widget.RecyclerView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="24dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="16dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="Pembantu Teratas"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="18sp"-->
-<!--                    android:textStyle="bold" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginEnd="16dp"-->
-<!--                    android:text="See All"-->
-<!--                    android:textColor="@color/purple" />-->
-<!--            </LinearLayout>-->
-
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
-
-<!--                <androidx.recyclerview.widget.RecyclerView-->
-<!--                    android:id="@+id/recyclerView2"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:paddingStart="16dp"-->
-<!--                    android:paddingEnd="16dp"-->
-
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--                <ProgressBar-->
-<!--                    android:id="@+id/progressBarTopDoctor"-->
-<!--                    style="?android:attr/progressBarStyle"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:layout_marginTop="16dp"
+                android:paddingEnd="16dp" />
         </LinearLayout>
     </ScrollView>
 
+    <!-- Bottom Navigation -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -291,40 +185,13 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Explorer"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="10sp">
-                    </TextView>
+                        android:textSize="10sp" />
                 </LinearLayout>
-
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/wishlistLayout"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="0.25"-->
-<!--                    android:orientation="vertical">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="30dp"-->
-<!--                        android:layout_height="30dp"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:layout_marginTop="8dp"-->
-<!--                        app:srcCompat="@drawable/wishlist"-->
-<!--                        app:tint="@color/black" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_marginTop="4dp"-->
-<!--                        android:text="Wishlist"-->
-<!--                        android:textAlignment="center"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="10sp">-->
-<!--                    </TextView>-->
-<!--                </LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/transactionLayout"
@@ -342,15 +209,13 @@
                         app:tint="@color/black" />
 
                     <TextView
-                        android:id="@+id/transaction"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Transaction"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="10sp">
-                    </TextView>
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -370,13 +235,12 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Profile"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="10sp">
-                    </TextView>
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.bottomnavigation.BottomNavigationView>

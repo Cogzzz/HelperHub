@@ -1,142 +1,210 @@
 package uasb.c14220127.myapplication
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.DatePicker
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 class InputJobdesc : AppCompatActivity() {
-    private var selectedDate = ""
-    private var selectedDuration = ""
+    private lateinit var db: FirebaseFirestore
+    private lateinit var datePickerButton: Button
+    private lateinit var proceedButton: Button
+    private var selectedDateTime: Long = 0L
+    private var selectedDate: String = ""
     private var workerId: String = ""
-    private var selectedPrice: Int = 0 // Harga yang dipilih berdasarkan durasi
+    private var selectedPrice: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_input_jobdesc)
 
-        val flowLayout = findViewById<FlexboxLayout>(R.id.flowLayout)
-        val proceedButton = findViewById<Button>(R.id.proceedButton)
-        val datePickerButton = findViewById<Button>(R.id.datePickerButton)
-        val durationSpinner = findViewById<Spinner>(R.id.durationSpinner)
+        initializeViews()
+        setupFirestore()
+        createJobButtons()
+        setupListeners()
+    }
 
-        // Ambil worker_id dari Intent yang diteruskan dari DetailActivity
+    private fun initializeViews() {
+        datePickerButton = findViewById(R.id.datePickerButton)
+        proceedButton = findViewById(R.id.proceedButton)
+    }
+
+    private fun setupFirestore() {
+        db = FirebaseFirestore.getInstance()
         workerId = intent.getStringExtra("worker_id") ?: ""
+    }
 
-        // Jobdesc options
-        val jobdescList: List<String> =
-            mutableListOf("Menyapu", "Mengepel", "Mencuci", "Menyetrika", "Membersihkan Kamar")
-        val selectedJobs: MutableList<String> = ArrayList()
+    private fun createJobButtons() {
+        val flowLayout = findViewById<FlexboxLayout>(R.id.flowLayout)
+        val jobdescList = mapOf(
+            "Menyapu" to 50000,
+            "Mengepel" to 60000,
+            "Mencuci" to 70000,
+            "Menyetrika" to 80000,
+            "Membersihkan Kamar" to 75000
+        )
+        val selectedJobs = mutableListOf<String>()
 
-        // Create job buttons dynamically
-        for (job in jobdescList) {
-            val button = Button(this)
-            button.text = job
-            button.setBackgroundResource(R.drawable.button_default_bg)
-            button.setTextColor(resources.getColor(R.color.black, theme))
-            button.textSize = 16f
-            button.maxLines = 2
-            button.setPadding(20, 10, 20, 10)
+        jobdescList.forEach { (job, price) ->
+            Button(this).apply {
+                text = job
+                setBackgroundResource(R.drawable.button_default_bg)
+                setTextColor(resources.getColor(R.color.black, theme))
+                textSize = 16f
+                maxLines = 2
+                setPadding(20, 10, 20, 10)
 
-            val layoutParams = FlexboxLayout.LayoutParams(
-                FlexboxLayout.LayoutParams.WRAP_CONTENT,
-                FlexboxLayout.LayoutParams.WRAP_CONTENT
-            )
-            layoutParams.setMargins(8, 8, 8, 8)
-            button.layoutParams = layoutParams
-
-            button.setOnClickListener { v: View? ->
-                if (selectedJobs.contains(job)) {
-                    selectedJobs.remove(job)
-                    button.setBackgroundResource(R.drawable.button_default_bg)
-                } else {
-                    selectedJobs.add(job)
-                    button.setBackgroundResource(R.drawable.button_selected_bg)
+                layoutParams = FlexboxLayout.LayoutParams(
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(8, 8, 8, 8)
                 }
-            }
 
-            flowLayout.addView(button)
-        }
-
-        // Date Picker functionality
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - hh:mm a", Locale.getDefault())
-        datePickerButton.setOnClickListener { v: View? ->
-            DatePickerDialog(
-                this,
-                { view: DatePicker?, year: Int, month: Int, dayOfMonth: Int ->
-                    calendar[year, month] = dayOfMonth
-                    selectedDate = dateFormat.format(calendar.time)
-                    datePickerButton.text = selectedDate
-                },
-                calendar[Calendar.YEAR],
-                calendar[Calendar.MONTH],
-                calendar[Calendar.DAY_OF_MONTH]
-            ).show()
-        }
-
-        // Duration Spinner functionality
-        val durations = arrayOf("1 hour", "2 hours", "3 hours", "4 hours")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, durations)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        durationSpinner.adapter = adapter
-        durationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                selectedDuration = durations[position]
-                selectedPrice = when (selectedDuration) {
-                    "1 hour" -> 80000
-                    "2 hours" -> 175000
-                    "3 hours" -> 225000
-                    "4 hours" -> 300000
-                    else -> 0
+                setOnClickListener {
+                    if (selectedJobs.contains(job)) {
+                        selectedJobs.remove(job)
+                        selectedPrice -= price
+                        setBackgroundResource(R.drawable.button_default_bg)
+                    } else {
+                        selectedJobs.add(job)
+                        selectedPrice += price
+                        setBackgroundResource(R.drawable.button_selected_bg)
+                    }
                 }
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+                flowLayout.addView(this)
             }
         }
 
-        // Proceed button functionality
-        proceedButton.setOnClickListener { v: View? ->
-            if (selectedDate.isEmpty() || selectedDuration.isEmpty() || selectedJobs.isEmpty()) {
-                Toast.makeText(
-                    this,
-                    "Please complete all fields!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                val intent = Intent(
-                    this,
-                    BookingActivity::class.java
-                )
-                intent.putStringArrayListExtra(
-                    "selectedJobs",
-                    ArrayList(selectedJobs)
-                )
-                intent.putExtra("date", selectedDate)
-                intent.putExtra("duration", selectedDuration)
-                intent.putExtra("worker_id", workerId)
-                intent.putExtra("price", selectedPrice)
-                startActivity(intent)
+        setupProceedButton(selectedJobs)
+    }
+
+    private fun setupListeners() {
+        datePickerButton.setOnClickListener {
+            showDateTimePicker()
+        }
+    }
+
+    private fun setupProceedButton(selectedJobs: MutableList<String>) {
+        proceedButton.setOnClickListener {
+            if (selectedDateTime == 0L || selectedJobs.isEmpty()) {
+                Toast.makeText(this, "Please complete all fields!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            Intent(this, BookingActivity::class.java).apply {
+                putExtra("selectedJobs", ArrayList(selectedJobs))
+                putExtra("date", selectedDate)
+                putExtra("worker_id", workerId)
+                putExtra("price", selectedPrice)
+                putExtra("scheduledDateTime", selectedDateTime)
+                startActivity(this)
             }
         }
     }
-}
 
-//misalkan dalam 1 hari, job task masing2 berapa.......
+    private fun showDateTimePicker() {
+        val currentDateTime = Calendar.getInstance()
+
+        // Tampilkan date picker dulu
+        DatePickerDialog(this, { _, year, month, dayOfMonth ->
+            // Setelah memilih tanggal, cek ketersediaan dulu sebelum memilih waktu
+            val selectedCalendar = Calendar.getInstance().apply {
+                set(year, month, dayOfMonth)
+                // Reset waktu ke 00:00:00 untuk memastikan perbandingan tanggal saja
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+
+            // Basic validation untuk tanggal
+            if (selectedCalendar.timeInMillis <= System.currentTimeMillis()) {
+                Toast.makeText(this, "Please select a future date", Toast.LENGTH_SHORT).show()
+                return@DatePickerDialog
+            }
+
+            // Cek ketersediaan tanggal
+            checkWorkerAvailability(selectedCalendar) { isAvailable ->
+                if (isAvailable) {
+                    // Jika tanggal tersedia, tampilkan time picker
+                    showTimePicker(selectedCalendar)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Worker sudah memiliki jadwal di tanggal tersebut. Silakan pilih tanggal lain.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        },
+            currentDateTime.get(Calendar.YEAR),
+            currentDateTime.get(Calendar.MONTH),
+            currentDateTime.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun showTimePicker(selectedCalendar: Calendar) {
+        TimePickerDialog(this,
+            { _, hourOfDay, minute ->
+                if (hourOfDay < 8 || hourOfDay >= 17) {
+                    Toast.makeText(this, "Please select a time between 8 AM and 5 PM", Toast.LENGTH_SHORT).show()
+                    return@TimePickerDialog
+                }
+
+                // Set waktu yang dipilih
+                selectedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                selectedCalendar.set(Calendar.MINUTE, minute)
+
+                selectedDateTime = selectedCalendar.timeInMillis
+
+                // Format dan tampilkan tanggal dan waktu yang dipilih
+                val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - HH:mm", Locale.getDefault())
+                selectedDate = dateFormat.format(selectedDateTime)
+                datePickerButton.text = selectedDate
+            },
+            8, // Default ke jam 8 pagi
+            0,
+            true
+        ).show()
+    }
+
+    private fun checkWorkerAvailability(selectedCalendar: Calendar, callback: (Boolean) -> Unit) {
+        // Format tanggal untuk perbandingan (hanya tanggal tanpa waktu)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val selectedDateStr = dateFormat.format(selectedCalendar.time)
+
+        db.collection("bookings")
+            .whereEqualTo("workerId", workerId)
+            .whereEqualTo("date", selectedDateStr)  // Gunakan field 'date' yang berisi string tanggal
+            .get()
+            .addOnSuccessListener { documents ->
+                // Jika tidak ada dokumen, berarti tanggal tersedia
+                callback(documents.isEmpty)
+
+                if (!documents.isEmpty) {
+                    selectedDateTime = 0L
+                    datePickerButton.text = "Select Date and Time"
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this,
+                    "Error checking availability: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                callback(false)
+                selectedDateTime = 0L
+                datePickerButton.text = "Select Date and Time"
+            }
+    }
+}

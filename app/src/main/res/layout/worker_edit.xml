@@ -6,110 +6,98 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profileImage"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/default_profile"
-        app:shapeAppearanceOverlay="@style/CircularImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Labels and TextViews -->
+    <!-- Page Title -->
     <TextView
-        android:id="@+id/fullNameLabel"
+        android:id="@+id/tvPageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Worker Name"
+        android:text="Edit Worker"
+        android:layout_gravity="center"
+        android:textColor="@color/purple"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/profileImage"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginBottom="24dp" />
 
+    <!-- Label for Name -->
     <TextView
-        android:id="@+id/workerNameText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:layout_constraintTop_toBottomOf="@id/fullNameLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <EditText
-        android:id="@+id/fullNameEdit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/fullNameLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-<!--    <TextView-->
-<!--        android:id="@+id/phoneLabel"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:text="Phone Number"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/fullNameEdit"-->
-<!--        app:layout_constraintStart_toStartOf="parent"/>-->
-
-
-
-    <TextView
-        android:id="@+id/specLabel"
+        android:id="@+id/tvNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:text="Name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPageTitle" />
+
+    <!-- Name Field -->
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter your name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNameLabel"
+        android:layout_marginTop="8dp" />
+
+    <!-- Label for Age -->
+    <TextView
+        android:id="@+id/tvAgeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Age"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etName"
+        android:layout_marginTop="16dp" />
+
+    <!-- Age Field -->
+    <EditText
+        android:id="@+id/etAge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter your age"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAgeLabel"
+        android:layout_marginTop="8dp" />
+
+    <!-- Label for Specialization -->
+    <TextView
+        android:id="@+id/tvSpecializationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Specialization"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/fullNameEdit"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <TextView
-        android:id="@+id/specText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:layout_constraintTop_toBottomOf="@id/specLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/etAge"
+        android:layout_marginTop="16dp" />
 
+    <!-- Specialization Field -->
     <EditText
-        android:id="@+id/specEdit"
+        android:id="@+id/etSpecialization"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/specLabel"
+        android:hint="Enter specialization"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSpecializationLabel"
+        android:layout_marginTop="8dp" />
 
-    <!-- Buttons -->
+    <!-- Save Button -->
     <Button
-        android:id="@+id/btnEditWorker"
-        android:layout_width="0dp"
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Edit Profile"
-        app:layout_constraintTop_toBottomOf="@id/specEdit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <Button
-        android:id="@+id/saveEdit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="16dp"
         android:text="Save"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/btnEditWorker"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/purple"
+        app:layout_constraintTop_toBottomOf="@id/etSpecialization" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

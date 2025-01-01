@@ -105,7 +105,7 @@ class HomePageActivity : AppCompatActivity() {
         startActivity(intent)
     }
     private fun openEditActivity(workerId: String) {
-        val intent = Intent(this, EditActivity::class.java).apply {
+        val intent = Intent(this, EditWorker::class.java).apply {
             putExtra("worker_id", workerId)
         }
         startActivity(intent)

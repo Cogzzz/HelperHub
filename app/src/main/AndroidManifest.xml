@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
 
     <application
@@ -33,7 +34,7 @@
         <activity android:name=".ProfileActivity"/>
         <activity android:name=".InvoiceActivity"/>
         <activity android:name=".InvoiceDetailActivity"/>
-        <activity android:name=".EditActivity"/>
+        <activity android:name=".EditWorker"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

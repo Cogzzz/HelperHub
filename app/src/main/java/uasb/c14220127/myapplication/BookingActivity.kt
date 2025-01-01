@@ -20,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.bumptech.glide.Glide
+import java.text.SimpleDateFormat
 import java.util.Arrays
+import java.util.Locale
 
 class BookingActivity : AppCompatActivity() {
     private var spinner: Spinner? = null
@@ -41,7 +43,6 @@ class BookingActivity : AppCompatActivity() {
 
     // Task info views
     private lateinit var dateTextView: TextView
-    private lateinit var durationTextView: TextView
     private lateinit var jobRecyclerView: RecyclerView
 
     private lateinit var priceTextView: TextView  // TextView untuk menampilkan harga
@@ -66,7 +67,6 @@ class BookingActivity : AppCompatActivity() {
 
         // Get data from intent
         val selectedDate = intent.getStringExtra("date")
-        val selectedDuration = intent.getStringExtra("duration")
         val selectedJobs = intent.getStringArrayListExtra("selectedJobs")
         price = intent.getIntExtra("price", 0)  // Ambil harga dari Intent
 
@@ -82,7 +82,7 @@ class BookingActivity : AppCompatActivity() {
             Log.e("BookingActivity", "No worker ID received")
         }
         fetchCurrentUserData()
-        displayTaskInfo(selectedDate, selectedDuration, selectedJobs)
+        displayTaskInfo(selectedDate,selectedJobs)
 
         // Setup payment spinner
         setupPaymentSpinner()
@@ -105,7 +105,6 @@ class BookingActivity : AppCompatActivity() {
 
         // Task info
         dateTextView = findViewById(R.id.tanggalMulaiKerja)
-        durationTextView = findViewById(R.id.lamaKerja)
         jobRecyclerView = findViewById(R.id.recyclerView)
 
         // Payment spinner
@@ -178,10 +177,9 @@ class BookingActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun displayTaskInfo(date: String?, duration: String?, jobs: ArrayList<String>?) {
+    private fun displayTaskInfo(date: String?, jobs: ArrayList<String>?) {
         // Display date and duration
         dateTextView.text = date ?: "Not specified"
-        durationTextView.text = duration ?: "Not specified"
         priceTextView.text = "$price"  // Tampilkan harga
 
         // Setup RecyclerView for jobs
@@ -237,12 +235,14 @@ class BookingActivity : AppCompatActivity() {
         // Get the jobs list from the RecyclerView adapter
         val jobsList = (jobRecyclerView.adapter as? JobAdapter)?.getJobs() ?: listOf()
 
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val bookingDate = dateFormat.format(selectedDateTime)
+
         val booking = BookingData(
             bookingId = bookingId,
             userId = currentUser.uid,
             workerId = workerId,
             date = dateTextView.text.toString(),
-            duration = durationTextView.text.toString(),
             jobs = jobsList,
             price = price,
             paymentMethod = selectedPaymentMethod,
