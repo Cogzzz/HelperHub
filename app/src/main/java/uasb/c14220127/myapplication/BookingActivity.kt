@@ -267,6 +267,9 @@ class BookingActivity : AppCompatActivity() {
         val jobsList = (jobRecyclerView.adapter as? JobAdapter)?.getJobs() ?: listOf()
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val scheduledDate = dateFormat.format(selectedDateTime)
+        val scheduledTime = timeFormat.format(selectedDateTime)
         val bookingDate = dateFormat.format(selectedDateTime)
 
         val booking = BookingData(
@@ -275,6 +278,8 @@ class BookingActivity : AppCompatActivity() {
             workerId = workerId,
             date = bookingDate,
             scheduledDateTime = selectedDateTime,
+            scheduledDate = scheduledDate,
+            scheduledTime = scheduledTime,
             jobs = jobsList,
             price = price,
             paymentMethod = selectedPaymentMethod,
@@ -295,7 +300,7 @@ class BookingActivity : AppCompatActivity() {
                 saveBookingAndCreateInvoice(booking)
             } else {
                 hideLoadingDialog()
-                Toast.makeText(this, "Worker is no longer available for this date", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Worker is not available for this date", Toast.LENGTH_LONG).show()
             }
         }
     }

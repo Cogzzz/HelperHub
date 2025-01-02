@@ -141,12 +141,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Bottom Navigation -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/bottomNavCoordinator"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
@@ -176,40 +176,13 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Explorer"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="10sp">
-                    </TextView>
+                        android:textSize="10sp" />
                 </LinearLayout>
-
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/wishlistLayout"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="0.25"-->
-<!--                    android:orientation="vertical">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="30dp"-->
-<!--                        android:layout_height="30dp"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:layout_marginTop="8dp"-->
-<!--                        app:srcCompat="@drawable/wishlist"-->
-<!--                        app:tint="@color/black" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_marginTop="4dp"-->
-<!--                        android:text="Wishlist"-->
-<!--                        android:textAlignment="center"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="10sp">-->
-<!--                    </TextView>-->
-<!--                </LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/transactionLayout"
@@ -227,15 +200,13 @@
                         app:tint="@color/black" />
 
                     <TextView
-                        android:id="@+id/transaction"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Transaction"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="10sp">
-                    </TextView>
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -255,13 +226,12 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Profile"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="10sp">
-                    </TextView>
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.bottomnavigation.BottomNavigationView>

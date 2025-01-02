@@ -2,8 +2,11 @@ package uasb.c14220127.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -18,13 +21,16 @@ class HomePageActivity : AppCompatActivity() {
     private lateinit var workerRecyclerView: RecyclerView
     private lateinit var workerAdapter: WorkerAdapter
     private val workerList = mutableListOf<Worker>()
+    private val filteredWorkerList = mutableListOf<Worker>()
     private lateinit var welcomeTextView: TextView
+    private lateinit var searchEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.homepage)
 
         setupViews()
+        setupSearch()
         setupBottomNavigation()
         fetchWorkersFromFirebase()
         fetchUserNameFromFirebase()
@@ -32,11 +38,12 @@ class HomePageActivity : AppCompatActivity() {
 
     private fun setupViews() {
         welcomeTextView = findViewById(R.id.textview2)
+        searchEditText = findViewById(R.id.searchEt)
         workerRecyclerView = findViewById(R.id.viewCategory)
         workerRecyclerView.layoutManager = LinearLayoutManager(this)
 
         // Worker Adapter dengan listener
-        workerAdapter = WorkerAdapter(workerList, this) { workerId ->
+        workerAdapter = WorkerAdapter(filteredWorkerList, this) { workerId ->
             openDetailActivity(workerId)
             openEditActivity(workerId)
         }
@@ -54,6 +61,30 @@ class HomePageActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupSearch() {
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                filterWorkers(s.toString())
+            }
+        })
+    }
+
+    private fun filterWorkers(query: String) {
+        filteredWorkerList.clear()
+        if (query.isEmpty()) {
+            filteredWorkerList.addAll(workerList)
+        } else {
+            val searchQuery = query.lowercase()
+            filteredWorkerList.addAll(workerList.filter { worker ->
+                worker.name?.lowercase()?.contains(searchQuery) == true ||
+                        worker.specialization?.lowercase()?.contains(searchQuery) == true
+            })
+        }
+        workerAdapter.notifyDataSetChanged()
+    }
+
 
     private fun fetchWorkersFromFirebase() {
         val db = FirebaseFirestore.getInstance()
@@ -61,11 +92,13 @@ class HomePageActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { result ->
                 workerList.clear()
+                filteredWorkerList.clear()
 
                 for (document in result) {
                     val worker = document.toObject(Worker::class.java)
                     worker.workerId = document.id // Assign the document ID to workerId
                     workerList.add(worker)
+                    filteredWorkerList.add(worker)
                 }
 
                 workerAdapter.notifyDataSetChanged()

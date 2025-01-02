@@ -36,6 +36,8 @@ class InvoiceActivity : AppCompatActivity() {
         // Setup RecyclerView
         setupRecyclerView()
 
+        setupBottomNavigation()
+
         // Setup SwipeRefresh
         setupSwipeRefresh()
 

@@ -12,6 +12,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import android.graphics.Color
 import android.util.Log
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -51,6 +52,28 @@ class InvoiceAdapter(
                     val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - HH:mm", Locale.getDefault())
                     val formattedDate = dateFormat.format(booking.scheduledDateTime)
                     holder.transactionDate.text = formattedDate
+
+                    // Mengambil data pekerja dari Firebase untuk mendapatkan gambar pekerja
+                    if (booking.workerId != null) {
+                        FirebaseFirestore.getInstance()
+                            .collection("workers")
+                            .document(booking.workerId!!)
+                            .get()
+                            .addOnSuccessListener { workerDoc ->
+                                val worker = workerDoc.toObject(Worker::class.java)
+                                if (worker?.imageUrl != null) {
+                                    // Memuat gambar pekerja menggunakan Glide
+                                    Glide.with(holder.transactionIcon.context)
+                                        .load(worker.imageUrl)
+                                        .into(holder.transactionIcon)
+                                } else {
+                                    holder.transactionIcon.setImageResource(R.drawable.baseline_person_24) // Gambar default
+                                }
+                            }
+                            .addOnFailureListener {
+                                holder.transactionIcon.setImageResource(R.drawable.baseline_person_24) // Gambar default jika gagal mengambil data
+                            }
+                    }
                 }
             }
             .addOnFailureListener {
