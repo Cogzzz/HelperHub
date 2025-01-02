@@ -136,12 +136,22 @@
                     android:text="Payment Method: BCA Virtual Account" />
 
                 <TextView
-                    android:id="@+id/paymentStatusText"
+                    android:id="@+id/workingStatusText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Status: PAID"
+                    android:text="Status: (working status)"
                     android:textColor="@color/green" />
+
+                <Button
+                    android:id="@+id/markFinishedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Mark as Finished"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/purple"
+                    android:visibility="visible" />
 
             </LinearLayout>
 

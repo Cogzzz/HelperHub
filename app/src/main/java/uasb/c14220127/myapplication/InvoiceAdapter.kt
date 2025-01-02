@@ -12,6 +12,9 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import android.graphics.Color
 import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class InvoiceAdapter(
     private val invoices: List<InvoiceData>,
@@ -37,18 +40,30 @@ class InvoiceAdapter(
         val invoice = invoices[position]
         Log.d("InvoiceAdapter", "Binding invoice: ${invoice.bookingId}")
 
+        FirebaseFirestore.getInstance()
+            .collection("bookings")
+            .document(invoice.bookingId)
+            .get()
+            .addOnSuccessListener { document ->
+                val booking = document.toObject(BookingData::class.java)
+                if (booking != null) {
+                    // Format tanggal menggunakan scheduledDateTime
+                    val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - HH:mm", Locale.getDefault())
+                    val formattedDate = dateFormat.format(booking.scheduledDateTime)
+                    holder.transactionDate.text = formattedDate
+                }
+            }
+            .addOnFailureListener {
+                // Fallback ke format tanggal biasa jika gagal mengambil booking
+                holder.transactionDate.text = invoice.date
+            }
+
+        holder.transactionTitle.text = "Booking with ${invoice.workerName}"
+        holder.transactionAmount.text = "Amount: Rp ${invoice.amount}"
+
         // Generate QR code untuk ikon transaksi
         val qrCode = generateQRCode(invoice.bookingId)
         holder.transactionIcon.setImageBitmap(qrCode)
-
-        // Set judul transaksi (menggunakan nama worker)
-        holder.transactionTitle.text = "Booking with ${invoice.workerName}"
-
-        // Set tanggal transaksi
-        holder.transactionDate.text = invoice.date
-
-        // Set jumlah pembayaran
-        holder.transactionAmount.text = "Amount: Rp ${invoice.amount}"
 
         // Handler untuk tombol view detail
         holder.viewDetailButton.setOnClickListener {

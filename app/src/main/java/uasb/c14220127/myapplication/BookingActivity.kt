@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.Arrays
+import java.util.Calendar
 import java.util.Locale
 
 class BookingActivity : AppCompatActivity() {
@@ -30,6 +31,7 @@ class BookingActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var confirmButton: Button // Add this at class level
     private lateinit var loadingDialog: AlertDialog
+    private var selectedDateTime: Long = 0L
 
     // Worker details views
     private lateinit var workerNameTv: TextView
@@ -66,17 +68,20 @@ class BookingActivity : AppCompatActivity() {
         workerId = intent.getStringExtra("worker_id") ?: ""
 
         // Get data from intent
+        selectedDateTime = intent.getLongExtra("scheduledDateTime", 0L)
         val selectedDate = intent.getStringExtra("date")
         val selectedJobs = intent.getStringArrayListExtra("selectedJobs")
         price = intent.getIntExtra("price", 0)  // Ambil harga dari Intent
 
-        confirmButton = findViewById(R.id.proceedButton) // Initialize the button
+
         confirmButton.setOnClickListener {
-            saveBookingToFirebase()
+            if (validateBooking()) {
+                saveBookingToFirebase()
+            }
         }
 
         // Fetch and display data
-        if (workerId != null) {
+        if (workerId.isNotEmpty()) {
             fetchWorkerData()
         } else {
             Log.e("BookingActivity", "No worker ID received")
@@ -90,6 +95,31 @@ class BookingActivity : AppCompatActivity() {
 
         // Initialize loading dialog
         createLoadingDialog()
+    }
+
+    private fun validateBooking(): Boolean {
+        if (selectedDateTime == 0L) {
+            Toast.makeText(this, "Invalid booking date", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = selectedDateTime
+
+        // Check if booking time is between 8 AM and 5 PM
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        if (hour < 8 || hour >= 17) {
+            Toast.makeText(this, "Booking time must be between 8 AM and 5 PM", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        // Check if booking date is in the future
+        if (selectedDateTime <= System.currentTimeMillis()) {
+            Toast.makeText(this, "Booking date must be in the future", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
     }
 
     private fun initializeViews() {
@@ -109,8 +139,8 @@ class BookingActivity : AppCompatActivity() {
 
         // Payment spinner
         spinner = findViewById(R.id.payment_method_spinner)
-
         priceTextView = findViewById(R.id.hargaService)  // Pastikan ada TextView untuk harga
+        confirmButton = findViewById(R.id.proceedButton) // Initialize the button
     }
 
     private fun setupWindowInsets() {
@@ -179,8 +209,9 @@ class BookingActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun displayTaskInfo(date: String?, jobs: ArrayList<String>?) {
         // Display date and duration
-        dateTextView.text = date ?: "Not specified"
-        priceTextView.text = "$price"  // Tampilkan harga
+        val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - HH:mm", Locale.getDefault())
+        dateTextView.text = date ?: dateFormat.format(selectedDateTime)
+        priceTextView.text = price.toString()
 
         // Setup RecyclerView for jobs
         jobs?.let {
@@ -242,7 +273,8 @@ class BookingActivity : AppCompatActivity() {
             bookingId = bookingId,
             userId = currentUser.uid,
             workerId = workerId,
-            date = dateTextView.text.toString(),
+            date = bookingDate,
+            scheduledDateTime = selectedDateTime,
             jobs = jobsList,
             price = price,
             paymentMethod = selectedPaymentMethod,
@@ -251,49 +283,84 @@ class BookingActivity : AppCompatActivity() {
             userPhone = userPhoneTv.text.toString(),
             workerName = workerNameTv.text.toString(),
             workerAddress = workerAddressTv.text.toString(),
-            workerPhone = workerPhoneTv.text.toString()
+            workerPhone = workerPhoneTv.text.toString(),
+            status = "pending"
         )
 
         showLoadingDialog()
 
-        // Save booking and create invoice
+        // Check worker availability again before saving
+        checkWorkerAvailability(bookingDate) { isAvailable ->
+            if (isAvailable) {
+                saveBookingAndCreateInvoice(booking)
+            } else {
+                hideLoadingDialog()
+                Toast.makeText(this, "Worker is no longer available for this date", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun checkWorkerAvailability(date: String, callback: (Boolean) -> Unit) {
         db.collection("bookings")
-            .document(bookingId)
+            .whereEqualTo("workerId", workerId)
+            .whereEqualTo("date", date)
+            .get()
+            .addOnSuccessListener { documents ->
+                callback(documents.isEmpty())
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
+    }
+
+    private fun saveBookingAndCreateInvoice(booking: BookingData) {
+        db.collection("bookings")
+            .document(booking.bookingId)
             .set(booking)
             .addOnSuccessListener {
-                // Create and save invoice
-                val invoice = InvoiceData(
-                    bookingId = bookingId,
-                    userId = currentUser.uid,
-                    workerId = workerId,
-                    workerName = workerNameTv.text.toString(),
-                    date = dateTextView.text.toString(),
-                    amount = price,
-                    paymentMethod = selectedPaymentMethod,
-                    timestamp = System.currentTimeMillis()
-                )
-
-                db.collection("invoices")
-                    .document(bookingId)
-                    .set(invoice)
-                    .addOnSuccessListener {
-                        hideLoadingDialog()
-                        Toast.makeText(this, "Booking successful!", Toast.LENGTH_SHORT).show()
-                        // Navigate directly to HomePage
-                        val intent = Intent(this, HomePageActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
-                        finish()
-                    }
-                    .addOnFailureListener { e ->
-                        hideLoadingDialog()
-                        Toast.makeText(this, "Error creating invoice: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                createInvoice(booking)
+                saveBookingReferenceToWorker(booking.bookingId)
+                saveBookingReferenceToUser(booking.bookingId)
+                // Show success dialog before navigating
+                showBookingSuccessDialog()
             }
             .addOnFailureListener { e ->
                 hideLoadingDialog()
                 Toast.makeText(this, "Error saving booking: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun createInvoice(booking: BookingData) {
+        val invoice = InvoiceData(
+            bookingId = booking.bookingId,
+            userId = booking.userId,
+            workerId = booking.workerId,
+            workerName = booking.workerName,
+            date = booking.date,
+            scheduledDateTime = booking.scheduledDateTime,
+            amount = booking.price,
+            paymentMethod = booking.paymentMethod,
+            timestamp = System.currentTimeMillis()
+        )
+
+        db.collection("invoices")
+            .document(booking.bookingId)
+            .set(invoice)
+            .addOnSuccessListener {
+                hideLoadingDialog()
+                navigateToHomePage()
+            }
+            .addOnFailureListener { e ->
+                hideLoadingDialog()
+                Toast.makeText(this, "Error creating invoice: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun navigateToHomePage() {
+        val intent = Intent(this, HomePageActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun createLoadingDialog() {
@@ -303,6 +370,18 @@ class BookingActivity : AppCompatActivity() {
         builder.setView(dialogView)
         builder.setCancelable(false)
         loadingDialog = builder.create()
+    }
+
+    private fun showBookingSuccessDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Booking Success")
+            .setMessage("Your booking has been successfully created!")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                navigateToHomePage()
+            }
+            .setCancelable(false)
+            .show()
     }
 
     private fun saveBookingReferenceToWorker(bookingId: String) {
@@ -343,12 +422,5 @@ class BookingActivity : AppCompatActivity() {
         if (!loadingDialog.isShowing) {
             loadingDialog.show()
         }
-    }
-    private fun navigateToBookingConfirmation(bookingId: String) {
-        val intent = Intent(this, HomePageActivity::class.java).apply {
-            putExtra("booking_id", bookingId)
-        }
-        startActivity(intent)
-        finish()
     }
 }
