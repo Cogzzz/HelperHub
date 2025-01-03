@@ -28,11 +28,11 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.signup)
 
-        // Initialize Firebase Auth and Firestore
+        //inisialiasi firestore dan auth dari firebase
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // Link UI elements
+        //field2 pada UI
         nameField = findViewById(R.id.fullName)
         usernameField = findViewById(R.id.username)
         emailField = findViewById(R.id.email)
@@ -47,7 +47,7 @@ class SignUpActivity : AppCompatActivity() {
             val email = emailField.text.toString().trim { it <= ' ' }
             val password = passwordField.text.toString().trim { it <= ' ' }
             val phone = phoneField.text.toString().trim { it <= ' ' }
-            val address = "" // Set address to empty string
+            val address = ""
 
             if (name.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty()) {
                 Toast.makeText(
@@ -58,13 +58,12 @@ class SignUpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Register user in Firebase Authentication
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task: Task<AuthResult?> ->
                     if (task.isSuccessful) {
                         val userId = auth.currentUser!!.uid
 
-                        // Save user details to Firestore
+                        //simpan data user ke firestore
                         val user = User(name, email, phone, username, password, address)
                         firestore.collection("users").document(userId).set(user)
                             .addOnCompleteListener { dbTask: Task<Void?> ->

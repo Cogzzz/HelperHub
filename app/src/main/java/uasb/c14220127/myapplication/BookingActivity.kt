@@ -54,7 +54,7 @@ class BookingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pembayaran)
 
-        // Initialize Firestore
+        // inisial Firestore
         db = FirebaseFirestore.getInstance()
 
         // Initialize views
@@ -64,10 +64,10 @@ class BookingActivity : AppCompatActivity() {
         setupWindowInsets()
 
 
-        // Get worker ID from intent
+        // ambil worker ID dari intent
         workerId = intent.getStringExtra("worker_id") ?: ""
 
-        // Get data from intent
+        // ambil data dari intent
         selectedDateTime = intent.getLongExtra("scheduledDateTime", 0L)
         val selectedDate = intent.getStringExtra("date")
         val selectedJobs = intent.getStringArrayListExtra("selectedJobs")
@@ -80,7 +80,7 @@ class BookingActivity : AppCompatActivity() {
             }
         }
 
-        // Fetch and display data
+        // Fetch & display data
         if (workerId.isNotEmpty()) {
             fetchWorkerData()
         } else {
@@ -93,7 +93,7 @@ class BookingActivity : AppCompatActivity() {
         setupPaymentSpinner()
 
 
-        // Initialize loading dialog
+        // insialisasi loading dialog
         createLoadingDialog()
     }
 
@@ -106,14 +106,14 @@ class BookingActivity : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = selectedDateTime
 
-        // Check if booking time is between 8 AM and 5 PM
+        //cek apakah booking diantara jam 08.00 - 17.00
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         if (hour < 8 || hour >= 17) {
             Toast.makeText(this, "Booking time must be between 8 AM and 5 PM", Toast.LENGTH_SHORT).show()
             return false
         }
 
-        // Check if booking date is in the future
+        // cek apakah pemilihan tanggal bukan di hari ini (minimal pemesanan untuk hari selanjutnya)
         if (selectedDateTime <= System.currentTimeMillis()) {
             Toast.makeText(this, "Booking date must be in the future", Toast.LENGTH_SHORT).show()
             return false
@@ -139,8 +139,8 @@ class BookingActivity : AppCompatActivity() {
 
         // Payment spinner
         spinner = findViewById(R.id.payment_method_spinner)
-        priceTextView = findViewById(R.id.hargaService)  // Pastikan ada TextView untuk harga
-        confirmButton = findViewById(R.id.proceedButton) // Initialize the button
+        priceTextView = findViewById(R.id.hargaService)
+        confirmButton = findViewById(R.id.proceedButton)
     }
 
     private fun setupWindowInsets() {
@@ -208,12 +208,12 @@ class BookingActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun displayTaskInfo(date: String?, jobs: ArrayList<String>?) {
-        // Display date and duration
+        // tampilkan date dan price
         val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - HH:mm", Locale.getDefault())
         dateTextView.text = date ?: dateFormat.format(selectedDateTime)
         priceTextView.text = price.toString()
 
-        // Setup RecyclerView for jobs
+        //rec view untuk jobs
         jobs?.let {
             val adapter = JobAdapter(it)
             jobRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -244,12 +244,12 @@ class BookingActivity : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // No action needed
+               //kosong
             }
         }
     }
 
-    // Update the saveBookingToFirebase() function:
+    //simpan ke firebase
     private fun saveBookingToFirebase() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
@@ -257,13 +257,13 @@ class BookingActivity : AppCompatActivity() {
             return
         }
 
-        // Get selected payment method
+
         val selectedPaymentMethod = (spinner?.selectedItem as? SpinnerItem)?.text ?: "Unknown"
 
-        // Create a unique booking ID
+        //buat kode booking
         val bookingId = db.collection("bookings").document().id
 
-        // Get the jobs list from the RecyclerView adapter
+        //ambil daftar job dari rec view adapter
         val jobsList = (jobRecyclerView.adapter as? JobAdapter)?.getJobs() ?: listOf()
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -294,7 +294,7 @@ class BookingActivity : AppCompatActivity() {
 
         showLoadingDialog()
 
-        // Check worker availability again before saving
+        //cek ketersediaan worker pada saat pemilihan schedule
         checkWorkerAvailability(bookingDate) { isAvailable ->
             if (isAvailable) {
                 saveBookingAndCreateInvoice(booking)

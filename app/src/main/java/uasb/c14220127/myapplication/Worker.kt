@@ -1,7 +1,7 @@
 package uasb.c14220127.myapplication
 
 data class Worker(
-    var workerId: String? = null, // Tambahkan ID untuk menyimpan auto-ID dari Firebase
+    var workerId: String? = null,
     val name: String? = null,
     val degree: String? = null,
     val specialization: String? = null,

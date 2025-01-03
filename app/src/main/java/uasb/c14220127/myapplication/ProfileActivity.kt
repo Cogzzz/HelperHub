@@ -73,7 +73,6 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setupBottomNavigation() {
         val explorerLayout = findViewById<LinearLayout>(R.id.explorerLayout)
-//        val wishlistLayout = findViewById<LinearLayout>(R.id.wishlistLayout)
         val transactionLayout = findViewById<LinearLayout>(R.id.transactionLayout)
         val profileLayout = findViewById<LinearLayout>(R.id.profileLayout)
 
@@ -86,8 +85,6 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(Intent(this, InvoiceActivity::class.java))
             finish()
         }
-
-        // Add other navigation handlers as needed
     }
 
     private fun fetchAndDisplayUserData() {
@@ -102,15 +99,13 @@ class ProfileActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
-                    // Display user data
+                    //tampilkan user data
                     fullNameText.text = document.getString("name") ?: ""
-
                     phoneText.text = document.getString("phone") ?: ""
                     addressText.text = document.getString("address") ?: ""
 
-                    // Set EditText values
+                    //set edit text
                     fullNameEdit.setText(fullNameText.text)
-
                     phoneEdit.setText(phoneText.text)
                     addressEdit.setText(addressText.text)
                 }
@@ -123,14 +118,14 @@ class ProfileActivity : AppCompatActivity() {
     private fun updateUserData() {
         val currentUser = auth.currentUser ?: return
 
-        // Data yang akan diperbarui
+        //data yang ingin diperbarui
         val updatedData = hashMapOf(
             "name" to fullNameEdit.text.toString(),
             "phone" to phoneEdit.text.toString(),
             "address" to addressEdit.text.toString()
         )
 
-        // Perbarui data di Firestore
+        //perbarui data di Firestore
         db.collection("users")
             .document(currentUser.uid)
             .update(updatedData as Map<String, Any>)

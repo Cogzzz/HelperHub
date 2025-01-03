@@ -27,21 +27,11 @@ class InvoiceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invoice_list)
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance()
-
-        // Initialize views
         initViews()
-
-        // Setup RecyclerView
         setupRecyclerView()
-
         setupBottomNavigation()
-
-        // Setup SwipeRefresh
         setupSwipeRefresh()
-
-        // Initial data load
         fetchUserInvoices()
     }
 

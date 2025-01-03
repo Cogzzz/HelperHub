@@ -42,7 +42,7 @@ class HomePageActivity : AppCompatActivity() {
         workerRecyclerView = findViewById(R.id.viewCategory)
         workerRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Worker Adapter dengan listener
+        //adapter rec view untuk worker
         workerAdapter = WorkerAdapter(filteredWorkerList, this) { workerId ->
             openDetailActivity(workerId)
             openEditActivity(workerId)

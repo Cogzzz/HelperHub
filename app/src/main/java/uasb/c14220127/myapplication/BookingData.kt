@@ -19,6 +19,6 @@ data class BookingData(
     val workerAddress: String = "",
     val workerPhone: String = "",
     val scheduledDateTime: Long = 0L,
-    val scheduledDate: String = "", // Date selected by user
-    val scheduledTime: String = "" // Time selected by user
+    val scheduledDate: String = "", // dari user
+    val scheduledTime: String = "" // dari user
 )

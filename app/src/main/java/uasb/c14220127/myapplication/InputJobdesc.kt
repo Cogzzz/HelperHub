@@ -42,8 +42,10 @@ class InputJobdesc : AppCompatActivity() {
         workerId = intent.getStringExtra("worker_id") ?: ""
     }
 
+
     private fun createJobButtons() {
         val flowLayout = findViewById<FlexboxLayout>(R.id.flowLayout)
+        //penentuan harga berdasarkan task yang dipilih oleh user
         val jobdescList = mapOf(
             "Menyapu" to 50000,
             "Mengepel" to 60000,
@@ -115,28 +117,28 @@ class InputJobdesc : AppCompatActivity() {
     private fun showDateTimePicker() {
         val currentDateTime = Calendar.getInstance()
 
-        // Tampilkan date picker dulu
+        // menampilkan date picker
         DatePickerDialog(this, { _, year, month, dayOfMonth ->
-            // Setelah memilih tanggal, cek ketersediaan dulu sebelum memilih waktu
+            // setelah memilih tanggal, cek ketersediaan dulu sebelum memilih waktu
             val selectedCalendar = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
-                // Reset waktu ke 00:00:00 untuk memastikan perbandingan tanggal saja
+                // reset waktu ke 00:00:00 untuk memastikan perbandingan tanggal saja
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
             }
 
-            // Basic validation untuk tanggal
+            // validasi pemilihan tanggal
             if (selectedCalendar.timeInMillis <= System.currentTimeMillis()) {
                 Toast.makeText(this, "Please select a future date", Toast.LENGTH_SHORT).show()
                 return@DatePickerDialog
             }
 
-            // Cek ketersediaan tanggal
+            // cek ketersediaan worker
             checkWorkerAvailability(selectedCalendar) { isAvailable ->
                 if (isAvailable) {
-                    // Jika tanggal tersedia, tampilkan time picker
+                    //kalau tersedia, lanjut menampilkan time picker
                     showTimePicker(selectedCalendar)
                 } else {
                     Toast.makeText(
@@ -161,13 +163,13 @@ class InputJobdesc : AppCompatActivity() {
                     return@TimePickerDialog
                 }
 
-                // Set waktu yang dipilih
+                // set waktu yang dipilih
                 selectedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 selectedCalendar.set(Calendar.MINUTE, minute)
 
                 selectedDateTime = selectedCalendar.timeInMillis
 
-                // Format dan tampilkan tanggal dan waktu yang dipilih
+                // format dan menampilkan tanggal dan waktu yang dipilih
                 val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - HH:mm", Locale.getDefault())
                 selectedDate = dateFormat.format(selectedDateTime)
                 datePickerButton.text = selectedDate
@@ -179,7 +181,7 @@ class InputJobdesc : AppCompatActivity() {
     }
 
     private fun checkWorkerAvailability(selectedCalendar: Calendar, callback: (Boolean) -> Unit) {
-        // Format tanggal untuk perbandingan (hanya tanggal tanpa waktu)
+
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val selectedDateStr = dateFormat.format(selectedCalendar.time)
 
@@ -188,7 +190,6 @@ class InputJobdesc : AppCompatActivity() {
             .whereEqualTo("date", selectedDateStr)  // Gunakan field 'date' yang berisi string tanggal
             .get()
             .addOnSuccessListener { documents ->
-                // Jika tidak ada dokumen, berarti tanggal tersedia
                 callback(documents.isEmpty)
 
                 if (!documents.isEmpty) {

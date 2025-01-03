@@ -30,42 +30,39 @@ class WorkerAdapter(private val workerList: List<Worker>, private val context: C
     override fun onBindViewHolder(holder: WorkerViewHolder, position: Int) {
         val worker = workerList[position]
 
-        // Load image using Glide
+        //load gambar
         worker.imageUrl?.let { imageUrl ->
             Glide.with(holder.img.context)
                 .load(imageUrl)
                 .into(holder.img)
         }
 
-        // Set text fields with null safety
+
         holder.namesTxt.text = worker.name ?: ""
         holder.degreeTxt.text = worker.degree ?: ""
         holder.specialsTxt.text = worker.specialization ?: ""
-
-        // Null safety for workerId
         val workerId = worker.workerId ?: ""
 
         // Set click listener on the entire item
         holder.itemView.setOnClickListener {
             if (workerId.isNotEmpty()) {
                 val intent = Intent(context, DetailActivity::class.java)
-                intent.putExtra("worker_id", workerId)  // Send worker ID to DetailActivity
+                intent.putExtra("worker_id", workerId)  //kirim worker ID ke DetailActivity
                 context.startActivity(intent)
             }
         }
 
-        // Optional: Button triggers the same action
         holder.makeBtn.setOnClickListener {
             if (workerId.isNotEmpty()) {
                 val intent = Intent(context, DetailActivity::class.java)
-                intent.putExtra("worker_id", workerId)  // Send worker ID to DetailActivity
+                intent.putExtra("worker_id", workerId)  //kirim worker ID ke DetailActivity
                 context.startActivity(intent)
             }
         }
         holder.editBtn.setOnClickListener {
             if (workerId.isNotEmpty()) {
                 val intent = Intent(context, EditWorker::class.java)
-                intent.putExtra("worker_id", workerId)  // Send worker ID to DetailActivity
+                intent.putExtra("worker_id", workerId)  //kirim worker ID ke DetailActivity
                 context.startActivity(intent)
             }
         }

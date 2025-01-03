@@ -9,16 +9,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-//import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivityLogin : AppCompatActivity() {
@@ -34,17 +27,17 @@ class MainActivityLogin : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
         setContentView(R.layout.login)
 
-        // Initialize Firebase Auth and Firestore
+        //inisialisasi firestore dan auth dari firebase
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // Link UI elements
+        //elemen2 field pada login page
         usernameField = findViewById(R.id.username)
         passwordField = findViewById(R.id.password)
         loginButton = findViewById(R.id.loginButton)
         registerText = findViewById(R.id.signupText)
 
-        // Login button listener
+        //login button listener
         loginButton.setOnClickListener {
             val username = usernameField.text.toString().trim()
             val password = passwordField.text.toString().trim()
@@ -59,7 +52,7 @@ class MainActivityLogin : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Query Firestore for the user with matching username
+            //query firestore ke database
             firestore.collection("users")
                 .whereEqualTo("username", username)
                 .get()
@@ -73,7 +66,7 @@ class MainActivityLogin : AppCompatActivity() {
                         return@addOnSuccessListener
                     }
 
-                    // Get user document
+                    //ambil user document
                     val userDoc = documents.documents[0]
                     val email = userDoc.getString("email") ?: ""
                     if (email.isEmpty()) {
@@ -81,7 +74,7 @@ class MainActivityLogin : AppCompatActivity() {
                         return@addOnSuccessListener
                     }
 
-                    // Attempt sign in with email and password
+
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
                             val intent = Intent(this@MainActivityLogin, HomePageActivity::class.java)

@@ -4,7 +4,7 @@ data class User(
     val name: String,
     val email: String,
     val phone: String,
-    val username: String, // Add username field
+    val username: String,
     val password: String,
     val address: String?
 )

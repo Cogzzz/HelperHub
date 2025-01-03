@@ -23,7 +23,6 @@ class InvoiceAdapter(
 ) : RecyclerView.Adapter<InvoiceAdapter.InvoiceViewHolder>() {
 
     class InvoiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Sesuai dengan ID di viewholder_invoice.xml
         val transactionIcon: ImageView = itemView.findViewById(R.id.transactionIcon)
         val transactionTitle: TextView = itemView.findViewById(R.id.transactionTitle)
         val transactionDate: TextView = itemView.findViewById(R.id.transactionDate)
@@ -48,12 +47,12 @@ class InvoiceAdapter(
             .addOnSuccessListener { document ->
                 val booking = document.toObject(BookingData::class.java)
                 if (booking != null) {
-                    // Format tanggal menggunakan scheduledDateTime
+                    //format tanggal menggunakan scheduledDateTime
                     val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - HH:mm", Locale.getDefault())
                     val formattedDate = dateFormat.format(booking.scheduledDateTime)
                     holder.transactionDate.text = formattedDate
 
-                    // Mengambil data pekerja dari Firebase untuk mendapatkan gambar pekerja
+                    //ambil data dari firebase
                     if (booking.workerId != null) {
                         FirebaseFirestore.getInstance()
                             .collection("workers")
@@ -77,18 +76,18 @@ class InvoiceAdapter(
                 }
             }
             .addOnFailureListener {
-                // Fallback ke format tanggal biasa jika gagal mengambil booking
+                //kembali format tanggal biasa jika gagal mengambil booking
                 holder.transactionDate.text = invoice.date
             }
 
         holder.transactionTitle.text = "Booking with ${invoice.workerName}"
         holder.transactionAmount.text = "Amount: Rp ${invoice.amount}"
 
-        // Generate QR code untuk ikon transaksi
+        // generate QR code untuk ikon transaksi
         val qrCode = generateQRCode(invoice.bookingId)
         holder.transactionIcon.setImageBitmap(qrCode)
 
-        // Handler untuk tombol view detail
+        //handler untuk tombol view detail
         holder.viewDetailButton.setOnClickListener {
             onItemClick(invoice)
         }
@@ -102,7 +101,7 @@ class InvoiceAdapter(
             val bitMatrix = multiFormatWriter.encode(
                 content,
                 BarcodeFormat.QR_CODE,
-                96,  // Sesuaikan dengan ukuran transactionIcon di XML
+                96,
                 96
             )
 
@@ -118,7 +117,7 @@ class InvoiceAdapter(
 
             return bitmap
         } catch (e: Exception) {
-            // Jika gagal generate QR code, return bitmap kosong
+            //jika gagal generate QR code, return bitmap kosong
             return Bitmap.createBitmap(96, 96, Bitmap.Config.RGB_565)
         }
     }

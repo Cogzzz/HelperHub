@@ -26,7 +26,7 @@ class InvoiceDetailActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         currentBookingId = intent.getStringExtra("bookingId")
 
-        // Add Mark as Finished button
+        // tambah button Mark as Finished untuk mengupdate status pekerjaan
         val markFinishedButton = findViewById<Button>(R.id.markFinishedButton)
 
         if (currentBookingId != null) {
@@ -59,7 +59,7 @@ class InvoiceDetailActivity : AppCompatActivity() {
     }
 
     private fun displayBookingDetails(booking: BookingData) {
-        // Format the date to include day and time
+        // proses format tanggal dan jam pemesanan
         val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy - HH:mm", Locale.getDefault())
         val date = dateFormat.format(booking.scheduledDateTime)
 
@@ -120,9 +120,9 @@ class InvoiceDetailActivity : AppCompatActivity() {
             .update("status", newStatus)
             .addOnSuccessListener {
                 Toast.makeText(this, "Booking marked as finished", Toast.LENGTH_SHORT).show()
-                // Refresh the activity to show updated status
+                //meload invoice kembali dari perubahan status
                 loadInvoiceDetails(bookingId)
-                // Hide the button after marking as finished
+                //button dibuat hide ketika sudah mengklik 'mark as finished'
                 findViewById<Button>(R.id.markFinishedButton).visibility = View.GONE
             }
             .addOnFailureListener { e ->

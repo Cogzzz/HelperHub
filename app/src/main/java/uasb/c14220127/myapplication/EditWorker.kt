@@ -21,14 +21,11 @@ class EditWorker : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.worker_edit)
 
-        // Inisialisasi Firebase Auth dan Firestore
+        //inisialisasi firestore dan auth dari firebase
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-
-        // Inisialisasi view
         initializeViews()
         loadWorkerData()
-        // Setup tombol simpan
         setupButtonListeners()
     }
 
@@ -53,7 +50,12 @@ class EditWorker : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         editWorkerName.setText(document.getString("name"))
-                        editWorkerAge.setText(document.getString("age"))
+                        val age = when (val ageValue = document.get("age")) {
+                            is String -> ageValue
+                            is Long -> ageValue.toString()
+                            else -> ""
+                        }
+                        editWorkerAge.setText(age)
                         editWorkerSpecialization.setText(document.getString("specialization"))
                     }
                 }
@@ -66,7 +68,7 @@ class EditWorker : AppCompatActivity() {
     private fun updateWorkerData() {
         val workerId = intent.getStringExtra("worker_id") // Dapatkan workerId dari Intent
         if (workerId.isNullOrEmpty()) {
-            // Jika workerId tidak ada, kembali ke halaman sebelumnya
+            // jika workerId tidak ada, kembali ke halaman sebelumnya
             Toast.makeText(this, "Worker ID tidak ditemukan", Toast.LENGTH_SHORT).show()
             finish()
             return
@@ -76,7 +78,7 @@ class EditWorker : AppCompatActivity() {
         val workerAgeStr = editWorkerAge.text.toString().trim()
         val workerSpecialization = editWorkerSpecialization.text.toString().trim()
 
-        // Validasi input
+        //validasi input
         if (workerName.isEmpty()) {
             editWorkerName.error = "Nama tidak boleh kosong"
             return
@@ -98,10 +100,10 @@ class EditWorker : AppCompatActivity() {
             return
         }
 
-        // Update data ke Firestore
+        // update data ke firestore firebase
         val workerData = mapOf(
             "name" to workerName,
-            "age" to workerAge,
+            "age" to workerAgeStr,
             "specialization" to workerSpecialization
         )
 
@@ -109,13 +111,11 @@ class EditWorker : AppCompatActivity() {
             .document(workerId)
             .update(workerData)
             .addOnSuccessListener {
-                // Tampilkan pesan sukses
                 Toast.makeText(this, "Data berhasil diperbarui", Toast.LENGTH_SHORT).show()
                 setResult(RESULT_OK)
                 finish()
             }
             .addOnFailureListener { e ->
-                // Tampilkan pesan error
                 Toast.makeText(this, "Gagal memperbarui data: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }

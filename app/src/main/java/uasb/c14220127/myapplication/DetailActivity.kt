@@ -71,41 +71,38 @@ class DetailActivity : AppCompatActivity() {
 
     private fun updateUI(worker: Worker) {
         with(binding) {
-            // Profile Image
+            // Profile image
             Glide.with(this@DetailActivity)
                 .load(worker.imageUrl)
                 .placeholder(R.drawable.workers)
                 .into(imageView4)
 
-            // Basic Information
+            //basic information
             tvNamaPembantu.text = worker.name
             tvAlamatPembantu.text = worker.address
             ratingBar2.rating = worker.rating ?: 0f
 
 
-            // Personal Information
+            //personal information
             tvAge.text = worker.age.toString() // Age
             tvExperience.text = worker.experience // Experience
 
-            // Skills Section
-            // You might want to format this text with proper styling
+            //skills
             val skillsText = TextView(this@DetailActivity).apply {
                 tvSkill.text = worker.skills
                 setTextColor(getColor(R.color.black))
             }
 
-            // About Me Section
+            //about me
             val aboutMeText = TextView(this@DetailActivity).apply {
                 tvAboutme.text = worker.aboutMe
                 setTextColor(getColor(R.color.black))
             }
 
-            // Work Experience Section
-            // Work Experience Section
+            //work experience
             tvWorkPeriod.text = worker.workPeriod ?: "No Period Provided"
             tvWorkExp.text = "${worker.workPosition ?: "N/A"} - ${worker.workEmployer ?: "N/A"}"
             tvDuties.text = "Duties: ${worker.workDuties ?: "N/A"}"
-
 
         }
     }
